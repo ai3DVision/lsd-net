@@ -56,8 +56,8 @@ class Dataset:
         self.shuffled = False
         self.subtract_mean = subtract_mean
         self.V = V
-        print 'dataset inited'
-        print '  total size:', len(listfiles)
+        print('dataset inited')
+        print('  total size:', len(listfiles))
     
     def shuffle(self):
         z = zip(self.listfiles, self.labels)
@@ -75,21 +75,21 @@ class Dataset:
         for x,y in self._batches_fast(listfiles, batch_size):
             yield x,y
     def _batches_simple(self,listfiles,batch_size):
-	n = len(listfiles) 
-	for i in xrange(0,n,batch_size):
-		starttime = time.time()
-		lists = listfiles[i : i+batch_size]
-		x = np.zeros((batch_size, 224, 224, 3))
-            	y = np.zeros(batch_size)
-		
-		for j,l in enumerate(lists):
-			s = Shape(l)
-			s.crop_center()
-			if self.subtract_mean:
-	                    s.subtract_mean()
-        	        x[j,...] = s.views[1,...]
-                	y[j] = s.label
-		yield x,y
+    	n = len(listfiles) 
+    	for i in xrange(0,n,batch_size):
+            starttime = time.time()
+            lists = listfiles[i : i+batch_size]
+            x = np.zeros((batch_size, 224, 224, 3))
+            y = np.zeros(batch_size)
+
+            for j,l in enumerate(lists):
+                s = Shape(l)
+                s.crop_center()
+                if self.subtract_mean:
+                    s.subtract_mean()
+                    x[j,...] = s.views[1,...]
+                    y[j] = s.label
+            yield x,y
 
     def _batches(self, listfiles, batch_size):
         n = len(listfiles)
@@ -99,7 +99,7 @@ class Dataset:
             lists = listfiles[i : i+batch_size]
             x = np.zeros((batch_size,self.V, 224, 224, 3)) 
             y = np.zeros(batch_size)
-            
+
             for j,l in enumerate(lists):
                 s = Shape(l)
                 s.crop_center()
@@ -108,7 +108,7 @@ class Dataset:
                 x[j, ...] = s.views
                 y[j] = s.label
             
-            print 'load batch time:', time.time()-starttime, 'sec'
+            print('load batch time:', time.time()-starttime, 'sec')
             yield x, y
     
     def _load_shape(self, listfile):

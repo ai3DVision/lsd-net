@@ -71,31 +71,31 @@ def main(argv):
     #train(dataset_train, dataset_val, FLAGS.weights, FLAGS.caffemodel)
     #model.load_weights("model.h5")
     for epoch in xrange(100):
-	    final_loss = 0
-	    acc = 0
-	    num = 0
-	    acc_train = 0
-	    num_test = 0
-	    print('epoch:', epoch)
-	    dataset_train.shuffle()
-	    for batch_x, batch_y in dataset_train.batches(1):
-			#print(batch_y)
-			loss,acc1 = model.fit(batch_x, batch_y)
-			acc_train += acc1
-			final_loss += loss
-			num += 1
-			
-	    print('loss: ',final_loss/num)
-            for batch_x, batch_y in dataset_val.batches(1):
-                        #print(batch_y)
-                        loss,acc2 = model.test_on_batch(batch_x, batch_y)
-                        acc += acc2
-                        num_test += 1
-	    print('acc_train: ', acc_train/num)
-	    print('acc_test: ', acc/num_test)
-	    pathmodel = "temp/model_%s.h5" % (epoch)
-            model.save(pathmodel)
-    print("Saved model to disk")	    
+        final_loss = 0
+        acc = 0
+        num = 0
+        acc_train = 0
+        num_test = 0
+        print('epoch:', epoch)
+        dataset_train.shuffle()
+        for batch_x, batch_y in dataset_train.batches(1):
+            #print(batch_y)
+            loss,acc1 = model.fit(batch_x, batch_y)
+            acc_train += acc1
+            final_loss += loss
+            num += 1
+
+        print('loss: ',final_loss/num)
+        for batch_x, batch_y in dataset_val.batches(1):
+            #print(batch_y)
+            loss,acc2 = model.test_on_batch(batch_x, batch_y)
+            acc += acc2
+            num_test += 1
+        print('acc_train: ', acc_train/num)
+        print('acc_test: ', acc/num_test)
+        pathmodel = "temp/model_%s.h5" % (epoch)
+        model.save(pathmodel)
+        print("Saved model to disk")	    
 
 
 def read_lists(list_of_lists_file):
