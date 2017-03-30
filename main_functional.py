@@ -99,10 +99,17 @@ def main(argv):
 
 
 def read_lists(list_of_lists_file):
-    listfile_labels = np.loadtxt(list_of_lists_file, dtype=str).tolist()
-    listfiles, labels  = zip(*[(l[0], int(l[1])) for l in listfile_labels])
-    return listfiles, labels
+    listfile_labels = []
 
+    text_file = open(list_of_lists_file, 'r')
+    for line in text_file:
+        file, label = line.split()
+        listfile_labels.append((file, int(label)))
+
+    listfiles, labels = zip(*listfile_labels)
+
+    return listfiles, labels
+    
 if __name__ == '__main__':
     main(sys.argv)
 
