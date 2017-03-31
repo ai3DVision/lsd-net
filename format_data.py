@@ -1,4 +1,7 @@
 import os
+import random
+
+VAL_RATIO = 0.2
 
 data_folder = 'modelnet40v1'
 if not os.path.exists(data_folder):
@@ -13,13 +16,16 @@ if not os.path.exists(lists_folder_name):
 	os.makedirs(lists_folder_name)
 
 train_file_name = 'train_lists.txt'
+val_file_name = 'val_lists.txt'
 test_file_name = 'test_lists.txt'
 
 lists_folder_name = os.path.join(output_folder_name, lists_folder_name)
 train_file_name = os.path.join(output_folder_name, train_file_name)
+val_file_name = os.path.join(output_folder_name, val_file_name)
 test_file_name = os.path.join(output_folder_name, test_file_name)
 
 train_lists = []
+val_lists = []
 test_lists = []
 label = -1
 # Loop each category folder
@@ -59,7 +65,10 @@ for category_folder in os.listdir(data_folder):
 					output_file_name = os.path.join(output_folder, output_file_name)
 
 					if folder == 'train':
-						train_lists.append('%s %d' % (output_file_name, label))
+						if random.random() > VAL_RATIO:
+							train_lists.append('%s %d' % (output_file_name, label))
+						else:
+							val_lists.append('%s %d' % (output_file_name, label))
 					elif folder == 'test':
 						test_lists.append('%s %d' % (output_file_name, label))
 
@@ -77,9 +86,12 @@ for category_folder in os.listdir(data_folder):
 			full_image_path = os.path.join(os.getcwd(), full_folder_path, image)
 			images.append(full_image_path)
 
-# Write train and test lists to files
+# Write train, val, test lists to files
 train_file = open(train_file_name, 'w')
 train_file.write('\n'.join(train_lists))
+
+val_file = open(val_file_name, 'w')
+val_file.write('\n'.join(val_lists))
 
 test_file = open(test_file_name, 'w')
 test_file.write('\n'.join(test_lists))
