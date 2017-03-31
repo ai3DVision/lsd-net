@@ -4,9 +4,10 @@ ModelNet40 for example
 """
 NUM_CLASSES = 40
 NUM_VIEWS = 12
-TRAIN_LOL = './data/view/train_lists.txt'
-VAL_LOL = './data/view/val_lists.txt'
-TEST_LOL = './data/view/test_lists.txt'
+DATA = './data'
+TRAIN_LOL = DATA + '/train_lists.txt'
+VAL_LOL = DATA + '/val_lists.txt'
+TEST_LOL = DATA + '/test_lists.txt'
 
 
 """
