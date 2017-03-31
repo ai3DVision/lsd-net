@@ -33,7 +33,7 @@ from keras.layers.core import Reshape,Lambda
 
 def create_model():
 	#model_perception = Sequential()
-    image =Input(shape=(224,244,3))
+    image =Input(shape=(224,224,3))
     model_perception = ResNet50(include_top=True, weights='imagenet')(image)
     model_perception = Flatten()(model_perception)
     model_perception = Dense(12, activation='softmax',name='fc480')(model_perception)
