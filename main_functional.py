@@ -80,7 +80,7 @@ def main(argv):
         dataset_train.shuffle()
         for batch_x, batch_y in dataset_train.batches(1):
             #print(batch_y)
-            loss,acc1 = model.fit(batch_x, batch_y)
+            loss,acc1 = model.train_on_batch(batch_x, batch_y)
             acc_train += acc1
             final_loss += loss
             num += 1
