@@ -24,24 +24,18 @@ test_lists = []
 label = -1
 # Loop each category folder
 for category_folder in os.listdir(data_folder):
-	if category_folder == '.DS_Store':
-		continue
 	# Update label for the category
 	label = label + 1
 
 	# Loop train and test folders
 	full_category_folder_path = os.path.join(data_folder, category_folder)
 	for folder in os.listdir(full_category_folder_path):
-		if folder == '.DS_Store':
-			continue
 		prev_category_num = None
 		images = []
 
 		# Loop each image
 		full_folder_path = os.path.join(full_category_folder_path, folder)
 		for image in os.listdir(full_folder_path):
-			if image == '.DS_Store':
-				continue
 			# image format is category_categoryNumber_num.ext
 			# category format is name1_name2_..._nameX
 			name = image.split('.')[0].split('_')
