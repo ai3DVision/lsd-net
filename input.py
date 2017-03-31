@@ -42,8 +42,8 @@ class Shape:
     def crop_center(self, size=(224,224)):
         w, h = self.views.shape[1], self.views.shape[2]
         wn, hn = size
-        left = w / 2 - wn / 2
-        top = h / 2 - hn / 2
+        left = round(w / 2 - wn / 2)
+        top = round(h / 2 - hn / 2)
         right = left + wn
         bottom = top + hn
         self.views = self.views[:, left:right, top:bottom, :]
