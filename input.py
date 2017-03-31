@@ -61,10 +61,11 @@ class Dataset:
     
     def shuffle(self):
         z = zip(self.listfiles, self.labels)
+        if type(z) == zip:
+            z = list(z)
         random.shuffle(z)
         self.listfiles, self.labels = [list(l) for l in zip(*z)]
         self.shuffled = True
-
 
     def batches(self, batch_size):
         for x,y in self._batches_simple(self.listfiles, batch_size):
@@ -74,9 +75,10 @@ class Dataset:
         listfiles = random.sample(self.listfiles, n)
         for x,y in self._batches_fast(listfiles, batch_size):
             yield x,y
+
     def _batches_simple(self,listfiles,batch_size):
     	n = len(listfiles) 
-    	for i in xrange(0,n,batch_size):
+    	for i in range(0,n,batch_size):
             starttime = time.time()
             lists = listfiles[i : i+batch_size]
             x = np.zeros((batch_size, 224, 224, 3))
@@ -93,7 +95,7 @@ class Dataset:
 
     def _batches(self, listfiles, batch_size):
         n = len(listfiles)
-        for i in xrange(0, n, batch_size):
+        for i in range(0, n, batch_size):
             starttime = time.time()
 
             lists = listfiles[i : i+batch_size]

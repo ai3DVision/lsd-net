@@ -70,7 +70,7 @@ def main(argv):
 
     #train(dataset_train, dataset_val, FLAGS.weights, FLAGS.caffemodel)
     #model.load_weights("model.h5")
-    for epoch in xrange(100):
+    for epoch in range(100):
         final_loss = 0
         acc = 0
         num = 0
