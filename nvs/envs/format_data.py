@@ -5,7 +5,6 @@ from env_constants import data_folder, output_folder_name, \
 						  val_file_name, test_file_name, \
 						  data_dict_file_name
 
-VAL_RATIO = 0.2
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 full_data_folder = os.path.join(dir_path, data_folder)
@@ -22,6 +21,7 @@ val_file_name = os.path.join(full_output_folder, val_file_name)
 test_file_name = os.path.join(full_output_folder, test_file_name)
 data_dict_file_name = os.path.join(full_output_folder, data_dict_file_name)
 
+VAL_RATIO = 0.2
 
 data_dict = {}
 train_lists = []
