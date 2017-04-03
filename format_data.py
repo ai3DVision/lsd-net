@@ -12,9 +12,6 @@ if not os.path.exists(output_folder_name):
 	os.makedirs(output_folder_name)
 
 lists_folder_name = 'lists'
-if not os.path.exists(lists_folder_name):
-	os.makedirs(lists_folder_name)
-
 train_file_name = 'train_lists.txt'
 val_file_name = 'val_lists.txt'
 test_file_name = 'test_lists.txt'
