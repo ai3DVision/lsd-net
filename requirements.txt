@@ -1,0 +1,6 @@
+keras
+tensorflow
+pillow
+matplotlib
+numpy
+-e .
