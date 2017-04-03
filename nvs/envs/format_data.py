@@ -6,30 +6,33 @@ from env_constants import data_folder, output_folder_name, \
 						  data_dict_file_name
 
 VAL_RATIO = 0.2
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
-if not os.path.exists(data_folder):
+full_data_folder = os.path.join(dir_path, data_folder)
+if not os.path.exists(full_data_folder):
 	raise('Data folder does not exist')
 
-if not os.path.exists(output_folder_name):
-	os.makedirs(output_folder_name)
+full_output_folder = os.path.join(dir_path, output_folder_name)
+if not os.path.exists(full_output_folder):
+	os.makedirs(full_output_folder)
 
+lists_folder_name = os.path.join(full_output_folder, lists_folder_name)
+train_file_name = os.path.join(full_output_folder, train_file_name)
+val_file_name = os.path.join(full_output_folder, val_file_name)
+test_file_name = os.path.join(full_output_folder, test_file_name)
 
-lists_folder_name = os.path.join(output_folder_name, lists_folder_name)
-train_file_name = os.path.join(output_folder_name, train_file_name)
-val_file_name = os.path.join(output_folder_name, val_file_name)
-test_file_name = os.path.join(output_folder_name, test_file_name)
 
 train_lists = []
 val_lists = []
 test_lists = []
 label = -1
 # Loop each category folder
-for category_folder in os.listdir(data_folder):
+for category_folder in os.listdir(full_data_folder):
 	# Update label for the category
 	label = label + 1
 
 	# Loop train and test folders
-	full_category_folder_path = os.path.join(data_folder, category_folder)
+	full_category_folder_path = os.path.join(full_data_folder, category_folder)
 	for folder in os.listdir(full_category_folder_path):
 		prev_category_num = None
 		images = []
@@ -78,7 +81,7 @@ for category_folder in os.listdir(data_folder):
 				images = []
 			
 			# Add new image
-			full_image_path = os.path.join(os.getcwd(), full_folder_path, image)
+			full_image_path = os.path.join(dir_path, full_folder_path, image)
 			images.append(full_image_path)
 
 # Write train, val, test lists to files
