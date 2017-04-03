@@ -3,7 +3,7 @@ from nvs.envs import NVSEnv
 env = NVSEnv()
 obs = env.reset()
 
-# Test moving the image closewise
+# Test moving the image clockwise
 cw_idx = list(env.actions.values()).index('CW')
 cw_action = list(env.actions.keys())[cw_idx]
 for i in range(10):
@@ -13,7 +13,7 @@ for i in range(10):
 # Change the render delay time faster
 env.set_render_delay(0.5)
 
-# Test moving the image counter closewise
+# Test moving the image counter clockwise
 ccw_idx = list(env.actions.values()).index('CCW')
 ccw_action = list(env.actions.keys())[ccw_idx]
 for i in range(10):
