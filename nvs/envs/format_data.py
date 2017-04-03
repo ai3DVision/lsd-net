@@ -20,8 +20,10 @@ lists_folder_name = os.path.join(full_output_folder, lists_folder_name)
 train_file_name = os.path.join(full_output_folder, train_file_name)
 val_file_name = os.path.join(full_output_folder, val_file_name)
 test_file_name = os.path.join(full_output_folder, test_file_name)
+data_dict_file_name = os.path.join(full_output_folder, data_dict_file_name)
 
 
+data_dict = {}
 train_lists = []
 val_lists = []
 test_lists = []
@@ -59,22 +61,39 @@ for category_folder in os.listdir(full_data_folder):
 						os.makedirs(output_folder)
 
 					# Write to output files
-					output_file_name = '%s_%s.txt' % (category, prev_category_num)
+					group = '%s_%s' % (category, prev_category_num)
+					output_file_name = '%s.txt' % group
 					output_file_name = os.path.join(output_folder, output_file_name)
 
 					if folder == 'train':
 						if random.random() > VAL_RATIO:
-							train_lists.append('%s %d' % (output_file_name, label))
+							train_lists.append(output_file_name)
+							data_type = 'train'
 						else:
-							val_lists.append('%s %d' % (output_file_name, label))
+							val_lists.append(output_file_name)
+							data_type = 'valid'
 					elif folder == 'test':
-						test_lists.append('%s %d' % (output_file_name, label))
+						test_lists.append(output_file_name)
+						data_type = 'test'
 
 					output = [str(label), str(len(images))] + images
 					output = '\n'.join(output)
 
 					output_file = open(output_file_name, 'w')
 					output_file.write(output)
+
+					if data_type not in data_dict:
+						data_dict[data_type] = {}
+
+					if category_folder not in data_dict[data_type]:
+						data_dict[data_type][category_folder] = {}
+
+					if group not in data_dict[data_type][category_folder]:
+						data_dict[data_type][category_folder][group] = {}
+
+					data_dict[data_type][category_folder][group]['label'] = label
+					data_dict[data_type][category_folder][group]['size'] = len(images)
+					data_dict[data_type][category_folder][group]['images'] = images
 
 				# Reset parameters
 				prev_category_num = category_num
@@ -93,3 +112,6 @@ val_file.write('\n'.join(val_lists))
 
 test_file = open(test_file_name, 'w')
 test_file.write('\n'.join(test_lists))
+
+data_dict_file = open(data_dict_file_name, 'w')
+data_dict_file.write(str(data_dict))
