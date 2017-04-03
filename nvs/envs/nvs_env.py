@@ -1,7 +1,6 @@
 import numpy as np
-from gym import Env, spaces
 
-class NVSEnv(Env):
+class NVSEnv():
 	metadata = {'render.modes': ['human']}
 
 	def __init__(self):
