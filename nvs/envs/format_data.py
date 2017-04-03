@@ -1,20 +1,18 @@
 import os
 import random
+from env_constants import data_folder, output_folder_name, \
+						  lists_folder_name, train_file_name, \
+						  val_file_name, test_file_name, \
+						  data_dict_file_name
 
 VAL_RATIO = 0.2
 
-data_folder = 'modelnet40v1'
 if not os.path.exists(data_folder):
 	raise('Data folder does not exist')
 
-output_folder_name = 'data'
 if not os.path.exists(output_folder_name):
 	os.makedirs(output_folder_name)
 
-lists_folder_name = 'lists'
-train_file_name = 'train_lists.txt'
-val_file_name = 'val_lists.txt'
-test_file_name = 'test_lists.txt'
 
 lists_folder_name = os.path.join(output_folder_name, lists_folder_name)
 train_file_name = os.path.join(output_folder_name, train_file_name)

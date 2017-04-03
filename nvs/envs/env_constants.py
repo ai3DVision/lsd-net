@@ -1,0 +1,6 @@
+data_folder = 'modelnet40v1'
+output_folder_name = 'data'
+lists_folder_name = 'lists'
+train_file_name = 'train_lists.txt'
+val_file_name = 'val_lists.txt'
+test_file_name = 'test_lists.txt'
