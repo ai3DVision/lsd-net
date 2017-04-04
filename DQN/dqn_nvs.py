@@ -16,7 +16,7 @@ from keras.optimizers import Adam
 import deeprl_hw2 as tfrl
 from deeprl_hw2.dqn import DQNAgent
 from deeprl_hw2.objectives import huber_loss
-from deeprl_hw2.preprocessors import AtariPreprocessor
+from deeprl_hw2.preprocessors import NVSPreprocessor
 from deeprl_hw2.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
 from deeprl_hw2.memory import BasicMemory, NaiveMemory
 from deeprl_hw2.constants import model_path, model_file
@@ -91,7 +91,7 @@ def main():  # noqa: D103
                              args.input_shape, 
                              num_actions, 
                              model_name=args.model)
-    preprocessor = AtariPreprocessor(args.input_shape)
+    preprocessor = NVSPreprocessor(args.input_shape)
     policy = LinearDecayGreedyEpsilonPolicy(num_actions, start_value, end_value, num_steps)
     memory_size = 10000
     gamma = 0.99
