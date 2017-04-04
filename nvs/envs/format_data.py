@@ -100,7 +100,7 @@ for category_folder in os.listdir(full_data_folder):
 				images = []
 			
 			# Add new image
-			full_image_path = os.path.join(dir_path, full_folder_path, image)
+			full_image_path = os.path.join(data_folder, category_folder, folder, image)
 			images.append(full_image_path)
 
 # Write train, val, test lists to files
