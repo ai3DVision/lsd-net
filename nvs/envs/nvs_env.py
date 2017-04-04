@@ -8,7 +8,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import time
 from nvs.envs.env_constants import data_folder, data_dict_file_name, \
-								   output_folder_name, data_folder
+								   output_folder_name
 
 class NVSEnv():
 	metadata = {'render.modes': ['human']}
@@ -16,7 +16,6 @@ class NVSEnv():
 	# Path to data and images
 	dir_path = os.path.dirname(os.path.realpath(__file__))
 	data_folder = os.path.join(dir_path, output_folder_name)
-	image_folder = os.path.join(dir_path, data_folder)
 
 	# Env state
 	category = None
@@ -110,5 +109,6 @@ class NVSEnv():
 	def get_current_image(self):
 		# Get RBG image
 		image_path = self.data['train'][self.category][self.group]['images'][self.image_idx]
+		image_path = os.path.join(self.dir_path, image_path)
 		image = np.array(Image.open(image_path))
 		return image
