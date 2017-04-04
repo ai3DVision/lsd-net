@@ -1,6 +1,7 @@
 from nvs.envs import NVSEnv
 
 env = NVSEnv()
+env.seed(100)
 obs = env.reset()
 
 # Test moving the image clockwise
