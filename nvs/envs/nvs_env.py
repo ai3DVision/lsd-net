@@ -7,10 +7,12 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import time
+from gym import Env, spaces
+
 from nvs.envs.env_constants import data_folder, data_dict_file_name, \
 								   output_folder_name
 
-class NVSEnv():
+class NVSEnv(Env):
 	metadata = {'render.modes': ['human']}
 
 	# Path to data and images
@@ -45,6 +47,7 @@ class NVSEnv():
 		self.actions[len(self.actions)] = 'CCW'
 
 		self.nA = len(self.actions)
+		self.action_space = spaces.Discrete(self.nA)
 
 	def reset(self):
 		# Get a random image and store the state
