@@ -4,4 +4,4 @@ from nvs.envs import env_constants
 
 register(
     id='New-View-Synthesis-v0',
-    entry_point='nvs.nvs_env:NVSEnv')
+    entry_point='nvs.envs.nvs_env:NVSEnv')
