@@ -1,6 +1,7 @@
 from nvs.envs import NVSEnv
+import gym
 
-env = NVSEnv()
+env = gym.make('New-View-Synthesis-v0')
 env.seed(100)
 obs = env.reset()
 
