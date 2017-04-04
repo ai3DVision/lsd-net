@@ -323,8 +323,11 @@ class DQNAgent:
         observation = env.reset()
         observation = self.preprocessor.process_state_for_memory(observation)
 
-        hp = HistoryPreprocessor(observation.shape, self.window)
-        state = hp.process_state_for_network(observation)
+        if self.window > 1:
+            hp = HistoryPreprocessor(observation.shape, self.window)
+            state = hp.process_state_for_network(observation)
+        else:
+            state = observation
 
         # Update the deep Q network
         for iteration in range(num_iterations+1):
@@ -345,7 +348,11 @@ class DQNAgent:
 
             observation = next_observation
             observation = self.preprocessor.process_state_for_memory(observation)
-            state = hp.process_state_for_network(observation)
+            
+            if self.window > 1:
+                state = hp.process_state_for_network(observation)
+            else:
+                state = observation
 
             # Train network
             if iteration % self.train_freq == 0 and iteration > self.num_burn_in:
@@ -428,8 +435,11 @@ class DQNAgent:
                 observation = env.reset()
                 observation = self.preprocessor.process_state_for_memory(observation)
                 
-                hp.reset()
-                state = hp.process_state_for_network(observation)
+                if self.window > 1:
+                    hp.reset()
+                    state = hp.process_state_for_network(observation)
+                else:
+                    state = observation
 
     def evaluate(self, env, num_episodes, max_episode_length=None):
         """Test your agent with a provided environment.
@@ -451,8 +461,11 @@ class DQNAgent:
         observation = env.reset()
         observation = self.preprocessor.process_state_for_memory(observation)
 
-        hp = HistoryPreprocessor(observation.shape, self.window)
-        state = hp.process_state_for_network(observation)
+        if self.window > 1:
+            hp = HistoryPreprocessor(observation.shape, self.window)
+            state = hp.process_state_for_network(observation)
+        else:
+            state = observation
 
         episode = 0
         total_reward = 0
@@ -472,7 +485,11 @@ class DQNAgent:
                 env.render()
 
             observation = self.preprocessor.process_state_for_memory(observation)
-            state = hp.process_state_for_network(observation)
+            
+            if self.window > 1:
+                state = hp.process_state_for_network(observation)
+            else:
+                state = observation
 
             # Update statistics
             episode_length = episode_length + 1
@@ -483,9 +500,12 @@ class DQNAgent:
                 observation = env.reset()
                 observation = self.preprocessor.process_state_for_memory(observation)
                 
-                hp.reset()
-                state = hp.process_state_for_network(observation)
-
+                if self.window > 1:
+                    hp.reset()
+                    state = hp.process_state_for_network(observation)
+                else:
+                    state = observation
+                    
                 episode_lengths.append(episode_length)
                 total_rewards.append(total_reward)
 
@@ -512,4 +532,3 @@ class DQNAgent:
         video_file = os.path.join(video_capture_path, video_name)
         env = wrappers.Monitor(env, video_file)
         self.evaluate(env, 1)
-
