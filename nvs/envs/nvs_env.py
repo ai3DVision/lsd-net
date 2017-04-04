@@ -98,7 +98,7 @@ class NVSEnv():
 		self.render_delay = render_delay
 
 	def seed(self, seed=None):
-		np.random.seed(seed)
+		random.seed(seed)
 
 	def read_data(self):
 		# Read dictionary of data from file created by format_data.py
