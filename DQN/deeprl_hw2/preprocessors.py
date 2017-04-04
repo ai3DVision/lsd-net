@@ -134,6 +134,48 @@ class AtariPreprocessor(Preprocessor):
         """Clip reward between -1 and 1."""
         return np.clip(reward, -1., 1.)
 
+class NVSPreprocessor(Preprocessor):
+    def __init__(self, new_size):
+        self.new_size = new_size
+
+    def process_state_for_memory(self, state):
+        """Scale, convert to greyscale and store as uint8.
+
+        We don't want to save floating point numbers in the replay
+        memory. We get the same resolution as uint8, but use a quarter
+        to an eigth of the bytes (depending on float32 or float64)
+
+        We recommend using the Python Image Library (PIL) to do the
+        image conversions.
+        """
+        img = Image.fromarray(state)
+        img = img.resize(self.new_size)
+        img = np.array(img)
+        return img.astype('uint8')
+
+    def process_state_for_network(self, state):
+        """Scale, convert to greyscale and store as float32.
+
+        Basically same as process state for memory, but this time
+        outputs float32 images.
+        """
+        img = Image.fromarray(state)
+        img = img.resize(self.new_size)
+        img = np.array(img)
+        return img.astype('float32') / 255.
+
+    def process_batch(self, samples):
+        """The batches from replay memory will be uint8, convert to float32.
+
+        Same as process_state_for_network but works on a batch of
+        samples from the replay memory. Meaning you need to convert
+        both state and next state values.
+        """
+        return samples.astype('float32') / 255.
+
+    def process_reward(self, reward):
+        """Clip reward between -1 and 1."""
+        return np.clip(reward, -1., 1.)
 
 class PreprocessorSequence(Preprocessor):
     """You may find it useful to stack multiple prepcrocesosrs (such as the History and the AtariPreprocessor).
