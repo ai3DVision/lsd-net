@@ -94,10 +94,12 @@ def create_linear_Q_network(window, input_shape, num_actions):
 	return model
 
 def create_resnet_Q_network(window, input_shape, num_actions):
+	assert(window == 1)
+	assert(input_shape == (224, 224))
+
 	model= Sequential()
 	model.add(ResNet50(include_top=False, weights='imagenet'))
-	#model.add(Flatten())
-	model.add(Dense(num_actions, activation='softmax',name='fc480'))
+	model.add(Dense(num_actions, activation='softmax'))
 
 	return model
 
