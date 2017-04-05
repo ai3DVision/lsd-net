@@ -94,7 +94,7 @@ def main():  # noqa: D103
     preprocessor = NVSPreprocessor(args.input_shape)
     policy = LinearDecayGreedyEpsilonPolicy(num_actions, start_value, end_value, num_steps)
     memory_size = 200000
-    gamma = 0.99
+    gamma = 0.5
     target_update_freq = 2000
     num_burn_in = 1000
     train_freq = 1
