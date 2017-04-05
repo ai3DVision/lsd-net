@@ -71,7 +71,7 @@ def main():  # noqa: D103
     # Parameters for LinearDecayGreedyEpsilonPolicy
     start_value = 1
     end_value = 0.1
-    num_steps = 1000000
+    num_steps = 200000
 
     # Number of frames in the sequence
     window = 1
@@ -93,15 +93,15 @@ def main():  # noqa: D103
                              model_name=args.model)
     preprocessor = NVSPreprocessor(args.input_shape)
     policy = LinearDecayGreedyEpsilonPolicy(num_actions, start_value, end_value, num_steps)
-    memory_size = 10000
+    memory_size = 200000
     gamma = 0.99
-    target_update_freq = 10000
+    target_update_freq = 2000
     num_burn_in = 50000
-    train_freq = 4
+    train_freq = 1
     batch_size = 32
-    save_network_freq = 10000
+    save_network_freq = 2000
     video_capture_points = (num_iterations * np.array([0/3., 1/3., 2/3., 3/3.])).astype('int')
-    eval_train_freq = 25000
+    eval_train_freq = 5000
     eval_train_num_ep = 20
     print_summary = True
 
