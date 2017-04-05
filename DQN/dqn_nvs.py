@@ -31,10 +31,10 @@ def main():  # noqa: D103
     parser.add_argument(
         '-o', '--output', default='atari-v0', help='Directory to save data to')
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
-    parser.add_argument('--input_shape', default=(84,84), type=int, help='Input shape')
+    parser.add_argument('--input_shape', default=(224,224), type=int, help='Input shape')
     parser.add_argument('--phase', default='train', type=str, help='Train/Test/Video')
     parser.add_argument('-r', '--render', action='store_true', default=False, help='Render')
-    parser.add_argument('--model', default='deep_Q_network', type=str, help='Type of model')
+    parser.add_argument('--model', default='resnet_Q_network', type=str, help='Type of model')
     parser.add_argument('-c', action='store_false', default=True, help='Cancel')
     parser.add_argument('-d', '--dir', default='', type=str, help='Directory')
     parser.add_argument('-n', '--number', default='', type=str, help='Model number')
@@ -74,7 +74,7 @@ def main():  # noqa: D103
     num_steps = 1000000
 
     # Number of frames in the sequence
-    window = 4
+    window = 1
 
     # Use experience replay
     experience_replay = args.c
