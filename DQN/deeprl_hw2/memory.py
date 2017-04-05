@@ -56,27 +56,13 @@ class BasicMemory(ReplayMemory):
 				if self.invalid_frame_index(frame_index, index, frame):
 					break
 				state = self.memory.buffer[frame_index].state
-				if len(state_shape) == 0:
-					states[self.window_length - frame - 1] = state
-				elif len(state_shape) == 1:
-					states[:,self.window_length - frame - 1] = state
-				elif len(state_shape) == 2:
-					states[:,:,self.window_length - frame - 1] = state
-				else:
-					raise('Case not covered')
+				states[..., self.window_length - frame - 1] = state
 
 			# Get the next frames
 			next_state = self.memory.buffer[(index + 1) % self.memory.size].state
-			if len(state_shape) == 0:
-				next_states[-1] = next_state
-			elif len(state_shape) == 1:
-				next_states[:,:-1] = states[:,1:]
-				next_states[:,-1] = next_state
-			elif len(state_shape) == 2:
-				next_states[:,:,:-1] = states[:,:,1:]
-				next_states[:,:,-1] = next_state
-			else:
-				raise('Case not covered')
+			next_states[..., :-1] = states[..., 1:]
+			next_states[..., -1] = next_state
+
 			action = self.memory.buffer[index].action
 			reward = self.memory.buffer[index].reward
 			is_terminal = self.memory.buffer[index].is_terminal

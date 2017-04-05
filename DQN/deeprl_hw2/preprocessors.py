@@ -31,14 +31,7 @@ class HistoryPreprocessor(Preprocessor):
     def process_state_for_network(self, state):
         """You only want history when you're deciding the current action to take."""
         assert(type(state) == int or state.shape == self.state_shape)
-        if len(self.state_shape) == 0:
-            prev_states = self.history[1:self.history_length] 
-        elif len(self.state_shape) == 1:
-           prev_states = self.history[:,1:self.history_length] 
-        elif len(self.state_shape) == 2:
-            prev_states = self.history[:,:,1:self.history_length]
-        else:
-            raise('Case not covered')
+        prev_states = self.history[..., 1:self.history_length]
         new_state = np.reshape(state, self.state_shape+(1,))
         self.history = np.append(prev_states, new_state, axis=-1)
         return self.history
