@@ -2,6 +2,7 @@ import tensorflow as tf
 from keras.layers import Input, Dense, Flatten, Convolution2D, Activation, Lambda
 from keras.models import Model, Sequential
 import keras.backend as K
+from keras.applications.resnet50 import ResNet50
 
 def create_model(window, input_shape, num_actions, model_name='q_network'):
     """Create the Q-network model.
@@ -33,6 +34,8 @@ def create_model(window, input_shape, num_actions, model_name='q_network'):
     """
     if 'dueling_deep_Q_network' in model_name:
     	model = create_dueling_deep_Q_network(window, input_shape, num_actions)
+    elif 'resnet_Q_network' in model_name:
+    	model = create_resnet_Q_network(window, input_shape, num_actions)
     elif 'deep_Q_network' in model_name:
         model = create_deep_Q_network(window, input_shape, num_actions)
     elif 'linear_Q_network' in model_name:
@@ -87,6 +90,14 @@ def create_linear_Q_network(window, input_shape, num_actions):
 		output = Dense(num_actions, activation='linear')(hidden)
 
 	model = Model(input=input, output=output)
+
+	return model
+
+def create_resnet_Q_network(window, input_shape, num_actions):
+	model= Sequential()
+	model.add(ResNet50(include_top=False, weights='imagenet'))
+	#model.add(Flatten())
+	model.add(Dense(num_actions, activation='softmax',name='fc480'))
 
 	return model
 
