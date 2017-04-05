@@ -131,7 +131,8 @@ def main():  # noqa: D103
                         render=args.render,
                         print_summary=print_summary,
                         max_grad=1.,
-                        double_dqn=args.double)
+                        double_dqn=args.double,
+                        use_history=False)
     dqnAgent.compile(Adam(lr=alpha), huber_loss, output=output_dir)
     
     if args.phase == 'train':

@@ -73,7 +73,8 @@ class DQNAgent:
                  render=False,
                  print_summary=False,
                  max_grad=1.,
-                 double_dqn=False):
+                 double_dqn=False,
+                 use_history=True):
         self.model_name = model_name
         self.q_network = q_network
         self.preprocessor = preprocessor
@@ -96,6 +97,7 @@ class DQNAgent:
         self.print_summary = print_summary
         self.max_grad = max_grad
         self.double_dqn = double_dqn
+        self.use_history = use_history
 
     def compile(self, optimizer, loss_func, output='.'):
         """Setup all of the TF graph variables/ops.
@@ -323,7 +325,7 @@ class DQNAgent:
         observation = env.reset()
         observation = self.preprocessor.process_state_for_memory(observation)
 
-        if self.window > 1:
+        if self.use_history:
             hp = HistoryPreprocessor(observation.shape, self.window)
             state = hp.process_state_for_network(observation)
         else:
@@ -349,7 +351,7 @@ class DQNAgent:
             observation = next_observation
             observation = self.preprocessor.process_state_for_memory(observation)
             
-            if self.window > 1:
+            if self.use_history:
                 state = hp.process_state_for_network(observation)
             else:
                 state = observation
@@ -435,7 +437,7 @@ class DQNAgent:
                 observation = env.reset()
                 observation = self.preprocessor.process_state_for_memory(observation)
                 
-                if self.window > 1:
+                if self.use_history:
                     hp.reset()
                     state = hp.process_state_for_network(observation)
                 else:
@@ -461,7 +463,7 @@ class DQNAgent:
         observation = env.reset()
         observation = self.preprocessor.process_state_for_memory(observation)
 
-        if self.window > 1:
+        if self.use_history:
             hp = HistoryPreprocessor(observation.shape, self.window)
             state = hp.process_state_for_network(observation)
         else:
@@ -486,7 +488,7 @@ class DQNAgent:
 
             observation = self.preprocessor.process_state_for_memory(observation)
             
-            if self.window > 1:
+            if self.use_history:
                 state = hp.process_state_for_network(observation)
             else:
                 state = observation
@@ -500,7 +502,7 @@ class DQNAgent:
                 observation = env.reset()
                 observation = self.preprocessor.process_state_for_memory(observation)
                 
-                if self.window > 1:
+                if self.use_history:
                     hp.reset()
                     state = hp.process_state_for_network(observation)
                 else:
