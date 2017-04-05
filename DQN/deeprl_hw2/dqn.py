@@ -253,6 +253,10 @@ class DQNAgent:
         state_batch = self.preprocessor.process_batch(state_batch)
         next_state_batch = self.preprocessor.process_batch(next_state_batch)
 
+        if not self.use_history:
+            state_batch = np.squeeze(state_batch, axis=-1)
+            next_state_batch = np.squeeze(next_state_batch, axis=-1)
+            
         # Calculate target Q values (depending on double_dqn boolean)
         q_target_values_batch = self.target_network.predict_on_batch(next_state_batch)
         if self.double_dqn:
