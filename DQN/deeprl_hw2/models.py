@@ -95,11 +95,18 @@ def create_linear_Q_network(window, input_shape, num_actions):
 
 def create_resnet_Q_network(window, input_shape, num_actions):
 	assert(window == 1)
-	assert(input_shape == (224, 224))
+	assert(input_shape[0] >= 197 and input_shape[1] >= 197)
 
-	model= Sequential()
-	model.add(ResNet50(include_top=False, weights='imagenet'))
-	model.add(Dense(num_actions, activation='softmax'))
+	with tf.name_scope('Input'):
+		input = Input(shape=input_shape+(3,))
+	with tf.name_scope('ResNet50'):
+		resnet50 = ResNet50(include_top=False, weights='imagenet')(input)
+	with tf.name_scope('Flatten'):
+		flatten = Flatten()(resnet50)
+	with tf.name_scope('Output'):
+		output = Dense(num_actions, activation='softmax')(flatten)
+
+	model = Model(input=input, output=output)
 
 	return model
 
