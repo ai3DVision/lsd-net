@@ -96,13 +96,13 @@ def main():  # noqa: D103
     memory_size = 200000
     gamma = 0.99
     target_update_freq = 2000
-    num_burn_in = 50000
+    num_burn_in = 1000
     train_freq = 1
     batch_size = 32
     save_network_freq = 2000
     video_capture_points = (num_iterations * np.array([0/3., 1/3., 2/3., 3/3.])).astype('int')
     eval_train_freq = 5000
-    eval_train_num_ep = 20
+    eval_train_num_ep = 10
     print_summary = True
 
     if experience_replay:
