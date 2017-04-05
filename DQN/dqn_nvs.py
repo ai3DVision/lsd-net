@@ -60,7 +60,7 @@ def main():  # noqa: D103
     # then you can run your fit method.
 
     # Number of training iterations
-    num_iterations = 5000000
+    num_iterations = 1000000
 
     # Learning rate
     alpha = 0.0001
@@ -93,7 +93,7 @@ def main():  # noqa: D103
                              model_name=args.model)
     preprocessor = AtariPreprocessor(args.input_shape)
     policy = LinearDecayGreedyEpsilonPolicy(num_actions, start_value, end_value, num_steps)
-    memory_size = 1000000
+    memory_size = 10000
     gamma = 0.99
     target_update_freq = 10000
     num_burn_in = 50000
