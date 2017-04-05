@@ -25,11 +25,12 @@ class NVSEnv(Env):
 	image_idx = None
 	group_size = None
 	image = None
+	steps = 0
 
 	# Time delay during render
 	render_delay = 1
 
-	def __init__(self):
+	def __init__(self, max_steps):
 		# Get dictionary of data
 		self.data = self.read_data()
 
@@ -49,6 +50,8 @@ class NVSEnv(Env):
 		self.nA = len(self.actions)
 		self.action_space = spaces.Discrete(self.nA)
 
+		self.max_steps = max_steps
+
 	def reset(self):
 		# Get a random image and store the state
 		categories = list(self.data['train'].keys())
@@ -65,6 +68,7 @@ class NVSEnv(Env):
 		self.image_idx = image_idx
 		self.group_size = size
 		self.image = self.get_current_image()
+		self.steps = 0
 
 		return self.image
 
@@ -87,6 +91,12 @@ class NVSEnv(Env):
 		else:
 			# Classify incorrectly
 			obs, reward, is_terminal, info = self.image, 0, 0, {}
+
+		# Terminate if reached max number of steps
+		if self.steps >= self.max_steps:
+			is_terminal = 1
+		else:
+			self.steps = self.steps + 1
 
 		return obs, reward, is_terminal, info
 
