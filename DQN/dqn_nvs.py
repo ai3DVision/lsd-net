@@ -135,13 +135,16 @@ def main():  # noqa: D103
                         use_history=False)
     dqnAgent.compile(Adam(lr=alpha), huber_loss, output=output_dir)
     
+    if args.dir:
+        model = model_file % (args.model, args.number)
+        model_dir = os.path.join(args.output, args.dir, model_path, model)
+        print(model_dir)
+        dqnAgent.q_network.load_weights(model_dir)
+
     if args.phase == 'train':
         dqnAgent.fit(env, num_iterations)
     elif args.phase == 'test':
         dqnAgent.policy = GreedyEpsilonPolicy(epsilon, num_actions)
-        model = model_file % (args.model, args.number)
-        model_dir = os.path.join(args.output, args.dir, model_path, model)
-        dqnAgent.q_network.load_weights(model_dir)
         dqnAgent.evaluate(env, num_episode)
     elif args.phase == 'video':
         dqnAgent.policy = GreedyEpsilonPolicy(epsilon, num_actions)
