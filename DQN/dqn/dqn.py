@@ -6,11 +6,11 @@ import tensorflow as tf
 from keras.layers import Input, Lambda
 from keras.models import Model, model_from_config
 import keras.backend as K
-from deeprl_hw2.preprocessors import HistoryPreprocessor
+from dqn.preprocessors import HistoryPreprocessor
 import time
-from deeprl_hw2.utils import create_directory, log_tb_value
+from dqn.utils import create_directory, log_tb_value
 from gym import wrappers
-from deeprl_hw2.constants import model_path, model_file, log_path, video_capture_path
+from dqn.constants import model_path, model_file, log_path, video_capture_path
 from PIL import Image
 
 class DQNAgent:
@@ -29,10 +29,10 @@ class DQNAgent:
     ----------
     q_network: keras.models.Model
       Your Q-network model.
-    preprocessor: deeprl_hw2.core.Preprocessor
+    preprocessor: dqn.core.Preprocessor
       The preprocessor class. See the associated classes for more
       details.
-    memory: deeprl_hw2.core.Memory
+    memory: dqn.core.Memory
       Your replay memory.
     gamma: float
       Discount factor.

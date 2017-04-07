@@ -13,16 +13,15 @@ from keras.layers import (Activation, Convolution2D, Dense, Flatten, Input,
 from keras.models import Model
 from keras.optimizers import Adam
 
-import deeprl_hw2 as tfrl
-from deeprl_hw2.dqn import DQNAgent
-from deeprl_hw2.objectives import huber_loss
-from deeprl_hw2.preprocessors import AtariPreprocessor
-from deeprl_hw2.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
-from deeprl_hw2.memory import BasicMemory, NaiveMemory
-from deeprl_hw2.constants import model_path, model_file
-from deeprl_hw2.models import create_model
-from deeprl_hw2.utils import get_output_folder
-from deeprl_hw2.core import Preprocessor
+from dqn.dqn import DQNAgent
+from dqn.objectives import huber_loss
+from dqn.preprocessors import AtariPreprocessor
+from dqn.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
+from dqn.memory import BasicMemory, NaiveMemory
+from dqn.constants import model_path, model_file
+from dqn.models import create_model
+from dqn.utils import get_output_folder
+from dqn.core import Preprocessor
 
 def main():  # noqa: D103
     parser = argparse.ArgumentParser(description='Run DQN on CartPole')

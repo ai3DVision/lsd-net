@@ -3,8 +3,8 @@
 import numpy as np
 from PIL import Image
 
-from deeprl_hw2 import utils
-from deeprl_hw2.core import Preprocessor
+from dqn import utils
+from dqn.core import Preprocessor
 
 
 class HistoryPreprocessor(Preprocessor):

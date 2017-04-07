@@ -13,8 +13,7 @@ from keras.layers import (Activation, Convolution2D, Dense, Flatten, Input,
 from keras.models import Model
 from keras.optimizers import Adam
 
-import deeprl_hw2 as tfrl
-from deeprl_hw2.dqn import DQNAgent
+from dqn.dqn import DQNAgent
 from deeprl_hw2.objectives import huber_loss
 from deeprl_hw2.preprocessors import NVSPreprocessor
 from deeprl_hw2.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy

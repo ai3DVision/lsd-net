@@ -1,6 +1,6 @@
 """Core classes."""
 
-from deeprl_hw2.ringbuffer import RingBuffer
+from dqn.ringbuffer import RingBuffer
 
 class Observation:
     def __init__(self, state, action, reward, is_terminal):
