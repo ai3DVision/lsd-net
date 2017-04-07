@@ -92,11 +92,11 @@ class NBVEnvV0(Env):
 			# Classify incorrectly
 			obs, reward, is_terminal, info = self.image, 0, 0, {}
 
+		self.steps = self.steps + 1
+
 		# Terminate if reached max number of steps
 		if self.steps >= self.max_steps:
 			is_terminal = 1
-		else:
-			self.steps = self.steps + 1
 
 		return obs, reward, is_terminal, info
 

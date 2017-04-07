@@ -55,9 +55,12 @@ assert(is_terminal)
 
 # Test max steps
 obs = env.reset()
-for i in range(max_steps+1):
+for i in range(max_steps):
 	obs, reward, is_terminal, info = env.step(0)
-	if i < max_steps:
+	if i < max_steps - 1:
+		assert(not is_terminal)
+	else:
+		assert(is_terminal)
 		assert(not is_terminal)
 	else:
 		assert(is_terminal)
