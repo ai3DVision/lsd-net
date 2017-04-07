@@ -106,6 +106,9 @@ class NVSEnv(Env):
 		time.sleep(self.render_delay)
 		plt.close()
 
+	def close(self):
+		pass
+
 	def set_render_delay(self, render_delay):
 		self.render_delay = render_delay
 
