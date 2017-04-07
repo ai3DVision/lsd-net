@@ -61,6 +61,3 @@ for i in range(max_steps):
 		assert(not is_terminal)
 	else:
 		assert(is_terminal)
-		assert(not is_terminal)
-	else:
-		assert(is_terminal)
