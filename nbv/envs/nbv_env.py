@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 import time
 from gym import Env, spaces
 
-from nvs.envs.env_constants import data_folder, data_dict_file_name, \
+from nbv.envs.env_constants import data_folder, data_dict_file_name, \
 								   output_folder_name
 
-class NVSEnvV0(Env):
+class NBVEnvV0(Env):
 	metadata = {'render.modes': ['human']}
 
 	# Path to data and images

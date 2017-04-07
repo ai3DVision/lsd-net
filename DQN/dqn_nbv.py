@@ -15,18 +15,18 @@ from keras.optimizers import Adam
 
 from dqn.dqn import DQNAgent
 from dqn.objectives import huber_loss
-from dqn.preprocessors import NVSPreprocessor
+from dqn.preprocessors import NBVPreprocessor
 from dqn.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
 from dqn.memory import BasicMemory, NaiveMemory
 from dqn.constants import model_path, model_file
 from dqn.models import create_model
 from dqn.utils import get_output_folder
 
-from nvs.envs import NVSEnvV0
+from nbv.envs import NBVEnvV0
 
 def main():  # noqa: D103
     parser = argparse.ArgumentParser(description='Run DQN on Atari Breakout')
-    parser.add_argument('--env', default='New-View-Synthesis-v0', help='Atari env name')
+    parser.add_argument('--env', default='Next-Best-View-v0', help='Atari env name')
     parser.add_argument(
         '-o', '--output', default='atari-v0', help='Directory to save data to')
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
@@ -90,7 +90,7 @@ def main():  # noqa: D103
                              args.input_shape, 
                              num_actions, 
                              model_name=args.model)
-    preprocessor = NVSPreprocessor(args.input_shape)
+    preprocessor = NBVPreprocessor(args.input_shape)
     policy = LinearDecayGreedyEpsilonPolicy(num_actions, start_value, end_value, num_steps)
     memory_size = 200000
     gamma = 0.5

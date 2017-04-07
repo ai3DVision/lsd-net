@@ -127,7 +127,7 @@ class AtariPreprocessor(Preprocessor):
         """Clip reward between -1 and 1."""
         return np.clip(reward, -1., 1.)
 
-class NVSPreprocessor(Preprocessor):
+class NBVPreprocessor(Preprocessor):
     def __init__(self, new_size):
         self.new_size = new_size
 

@@ -1,4 +1,4 @@
-from nvs.envs.nvs_env import NVSEnvV0
+from nbv.envs.nbv_env import NBVEnvV0
 from gym.envs.registration import register
 import gym
 
@@ -6,11 +6,11 @@ max_steps = 12
 seed = 100
 
 register(
-    id='New-View-Synthesis-test-v0',
-    entry_point='nvs.envs.nvs_env:NVSEnvV0',
+    id='Next-Best-View-test-v0',
+    entry_point='nbv.envs.nbv_env:NBVEnvV0',
     kwargs={'max_steps': max_steps})
 
-env = gym.make('New-View-Synthesis-test-v0')
+env = gym.make('Next-Best-View-test-v0')
 env.seed(seed)
 
 # Change the render delay time
