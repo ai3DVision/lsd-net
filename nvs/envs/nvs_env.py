@@ -12,7 +12,7 @@ from gym import Env, spaces
 from nvs.envs.env_constants import data_folder, data_dict_file_name, \
 								   output_folder_name
 
-class NVSEnv(Env):
+class NVSEnvV0(Env):
 	metadata = {'render.modes': ['human']}
 
 	# Path to data and images

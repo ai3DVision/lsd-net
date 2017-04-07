@@ -22,7 +22,7 @@ from dqn.constants import model_path, model_file
 from dqn.models import create_model
 from dqn.utils import get_output_folder
 
-from nvs.envs import NVSEnv
+from nvs.envs import NVSEnvV0
 
 def main():  # noqa: D103
     parser = argparse.ArgumentParser(description='Run DQN on Atari Breakout')

@@ -1,4 +1,4 @@
-from nvs.envs.nvs_env import NVSEnv
+from nvs.envs.nvs_env import NVSEnvV0
 from gym.envs.registration import register
 import gym
 
@@ -7,7 +7,7 @@ seed = 100
 
 register(
     id='New-View-Synthesis-test-v0',
-    entry_point='nvs.envs.nvs_env:NVSEnv',
+    entry_point='nvs.envs.nvs_env:NVSEnvV0',
     kwargs={'max_steps': max_steps})
 
 env = gym.make('New-View-Synthesis-test-v0')
