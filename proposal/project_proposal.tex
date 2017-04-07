@@ -1,0 +1,61 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+
+\cvprfinalcopy
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+\ifcvprfinal\pagestyle{empty}\fi
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Active Multi-View Recognition with Deep Reinforcement Learning}
+
+\author{Dinesh Narapureddy\\
+Carnegie Mellon University\\
+{\tt\small dnarapur@andrew.cmu.edu}\\
+\and
+George Tan\\
+Carnegie Mellon University\\
+{\tt\small georget1@andrew.cmu.edu}\\
+}
+
+\maketitle
+%\thispagestyle{empty}
+% * <georget1@andrew.cmu.edu> 2017-04-07T05:17:17.149Z:
+%
+% ^.
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+	Multi-view recognition is a more realistic task for object detection than single-image recognition. Traditional methods use single-view images for detection, but this ignores the other dimensions of the objects. In a real life application, agents can rotate or move objects for a multi-view image sequence of the objects which results in better learning and recognition. There has been sparse literature addressing this task and comes under the umbrella of active vision. Active multi-view recognition uses the current information to make a approximate guess of the next view to better understand a image. This mimics human behavior for various recognition tasks. For example, in case of a occluded object or viewing a object from unrecognizable viewpoints human plan an action hypothesizing the object and the next best view to recognize it. Inspired from human behavior for active vision we propose a reinforcement learning based method to recognize object categories.   
+
+%-------------------------------------------------------------------------
+\subsection{Related works}
+	Recent papers introduced CNNs for generalized Multi-view recognition by learning from images that cover the full sphere of viewpoints over an object \cite{DBLP:journals/corr/JayaramanG16} \cite{DBLP:journals/corr/SuMKL15}. \cite{DBLP:journals/corr/WuSKTX14} have proposed to combine multiple view features using a view based fully connected network and show the state-art-the art object recognition. Next best view selection for 3D object recognition has been proposed by \cite{DBLP:journals/corr/WuSKTX14}. Taking advantage of the multi-image sequences, the agent can learn the best trajectory with pairs of images to achieve faster recognition \cite{DBLP:journals/corr/JohnsLD16}. Although most of the methods have addressed the problem with different approaches, they introduce prior knowledge and bias in how to search for the next best view. We believe reinforcement learning as the best method to learn the next best view selection. Recent improvements in deep reinforcement learning \cite{DBLP:journals/corr/MnihKSGAWR13} show improvements to human level performance on tasks.
+
+%------------------------------------------------------------------------
+\section{Proposal}
+	We propose a deep reinforcement learning method to learn the next best view. We will use a Deep Q-Network \cite{DBLP:journals/corr/MnihKSGAWR13} to learn the best actions, i.e. which direction to move for the next best view, for a given image. The method will be evaluated on the ModelNet40 dataset \cite{DBLP:journals/corr/WuSKTX14}, which are 3D CAD models from the 40 categories at different viewpoints. Recognition accuracy and number of actions will be measured. Although accuracy may be the most important metric, it would be best if the least number of actions are taken while searching for the next best view.
+
+{\small
+\bibliographystyle{ieee}
+\bibliography{egbib}
+}
+
+\end{document}
