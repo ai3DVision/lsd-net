@@ -14,13 +14,13 @@ from keras.models import Model
 from keras.optimizers import Adam
 
 from dqn.dqn import DQNAgent
-from deeprl_hw2.objectives import huber_loss
-from deeprl_hw2.preprocessors import NVSPreprocessor
-from deeprl_hw2.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
-from deeprl_hw2.memory import BasicMemory, NaiveMemory
-from deeprl_hw2.constants import model_path, model_file
-from deeprl_hw2.models import create_model
-from deeprl_hw2.utils import get_output_folder
+from dqn.objectives import huber_loss
+from dqn.preprocessors import NVSPreprocessor
+from dqn.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
+from dqn.memory import BasicMemory, NaiveMemory
+from dqn.constants import model_path, model_file
+from dqn.models import create_model
+from dqn.utils import get_output_folder
 
 from nvs.envs import NVSEnv
 
@@ -137,7 +137,6 @@ def main():  # noqa: D103
     if args.dir:
         model = model_file % (args.model, args.number)
         model_dir = os.path.join(args.output, args.dir, model_path, model)
-        print(model_dir)
         dqnAgent.q_network.load_weights(model_dir)
 
     if args.phase == 'train':
