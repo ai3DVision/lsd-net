@@ -60,13 +60,13 @@ class NBVEnvV0(Env):
 		groups = list(self.data['train'][category].keys())
 		group = random.choice(groups)
 
-		size = self.data['train'][category][group]['size']
-		image_idx = random.randint(1, 10)
-		
+		group_size = self.data['train'][category][group]['size']
+		image_idx = random.randint(1, group_size) - 1
+
 		self.category = category
 		self.group = group
 		self.image_idx = image_idx
-		self.group_size = size
+		self.group_size = group_size
 		self.image = self.get_current_image()
 		self.steps = 0
 
