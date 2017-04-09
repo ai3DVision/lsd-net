@@ -5,3 +5,8 @@ register(
     id='Next-Best-View-v0',
     entry_point='nbv.envs.nbv_env:NBVEnvV0',
     kwargs={'max_steps': 12})
+
+register(
+    id='Next-Best-View-v1',
+    entry_point='nbv.envs.nbv_env:NBVEnvV1',
+    kwargs={'max_steps': 12})
