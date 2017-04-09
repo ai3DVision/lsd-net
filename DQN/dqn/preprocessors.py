@@ -3,8 +3,8 @@
 import numpy as np
 from PIL import Image
 
-from dqn import utils
-from dqn.core import Preprocessor
+from DQN.dqn import utils
+from DQN.dqn.core import Preprocessor
 
 
 class HistoryPreprocessor(Preprocessor):

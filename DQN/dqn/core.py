@@ -1,6 +1,6 @@
 """Core classes."""
 
-from dqn.ringbuffer import RingBuffer
+from DQN.dqn.ringbuffer import RingBuffer
 
 class Observation:
     def __init__(self, state, action, reward, is_terminal):

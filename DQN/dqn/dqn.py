@@ -6,11 +6,11 @@ import tensorflow as tf
 from keras.layers import Input, Lambda
 from keras.models import Model, model_from_config
 import keras.backend as K
-from dqn.preprocessors import HistoryPreprocessor
+from DQN.dqn.preprocessors import HistoryPreprocessor
 import time
-from dqn.utils import create_directory, log_tb_value
+from DQN.dqn.utils import create_directory, log_tb_value
 from gym import wrappers
-from dqn.constants import model_path, model_file, log_path, video_capture_path
+from DQN.dqn.constants import model_path, model_file, log_path, video_capture_path
 from PIL import Image
 
 class DQNAgent:

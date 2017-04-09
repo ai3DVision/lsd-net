@@ -1,7 +1,7 @@
 import random
 import numpy as np
-from dqn.core import ReplayMemory, Sample, Observation
-from dqn.ringbuffer import RingBuffer
+from DQN.dqn.core import ReplayMemory, Sample, Observation
+from DQN.dqn.ringbuffer import RingBuffer
 
 class BasicMemory(ReplayMemory):
 	"""Memory to record and sample past experience.
