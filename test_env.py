@@ -61,3 +61,25 @@ for i in range(max_steps):
 		assert(not is_terminal)
 	else:
 		assert(is_terminal)
+
+register(
+    id='Next-Best-View-test-v1',
+    entry_point='nbv.envs.nbv_env:NBVEnvV1',
+    kwargs={'max_steps': max_steps})
+
+env = gym.make('Next-Best-View-test-v1')
+env.seed(seed)
+
+# Test max steps
+obs = env.reset()
+category = env.category
+category_idx = list(env.actions.values()).index(category)
+category_action = list(env.actions.keys())[category_idx]
+for i in range(max_steps):
+	obs, reward, is_terminal, info = env.step(category_action)
+	assert(reward == 1)
+	if i < max_steps - 1:
+		assert(not is_terminal)
+	else:
+		assert(is_terminal)
+		
