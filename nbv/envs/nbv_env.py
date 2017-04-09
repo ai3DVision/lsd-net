@@ -128,3 +128,13 @@ class NBVEnvV0(Env):
 		image_path = os.path.join(self.dir_path, image_path)
 		image = np.array(Image.open(image_path))
 		return image
+
+class NBVEnvV1(NBVEnvV0):
+	def __init__(self, max_steps):
+		NBVEnvV0.__init__(self, max_steps)
+
+	def step(self, action):
+		obs, reward, is_terminal, info = NBVEnvV0.step(self, action)
+		if self.steps < self.max_steps:
+			is_terminal = 0
+		return obs, reward, is_terminal, info
