@@ -30,7 +30,7 @@ set -u  # throw an error if unset variable referenced
 set -e  # exit on error
 
 # run the experiment script
-python $PYLON2/Next-Best-View/dqn_nvs.py --phase test --dir {DIRECTORY}
+python $PYLON2/Next-Best-View/dqn_nbv.py --phase test --dir {DIRECTORY}
 
 # turn off the virtualenv
 deactivate
