@@ -6,9 +6,14 @@
 * tensorflow  1.0.1
 * gym 0.8.1
 
-## How to run
+## How to train the DQN on NBV
 ```
 python dqn_nbv.py
+```
+
+## How to test the DQN
+```
+python dqn_nbv.py --phase test --dir {WEIGHT DIRECTORY}
 ```
 
 ## How test the NBV env
