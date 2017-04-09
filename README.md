@@ -1,10 +1,10 @@
 # Next Best View
 
 ## Requirements
-* python3
-* keras
-* tensorflow
-* gym
+* python 3.4.2
+* keras 2.0.2
+* tensorflow  1.0.1
+* gym 0.8.1
 
 ## How to run
 ```
