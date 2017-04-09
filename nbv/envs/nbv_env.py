@@ -8,6 +8,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import time
 from gym import Env, spaces
+import sys
 
 from nbv.envs.env_constants import data_folder, data_dict_file_name, \
 								   output_folder_name
@@ -164,6 +165,7 @@ class NBVEnvV0(Env):
 			accuracies.append(num_correct / float(total_groups))
 
 		print('The accuracy is %f +/- %f' % (np.mean(accuracies), np.std(accuracies)))
+		sys.stdout.flush()
 
 class NBVEnvV1(NBVEnvV0):
 	def __init__(self, max_steps):
