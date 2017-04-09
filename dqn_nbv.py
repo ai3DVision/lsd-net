@@ -13,14 +13,14 @@ from keras.layers import (Activation, Convolution2D, Dense, Flatten, Input,
 from keras.models import Model
 from keras.optimizers import Adam
 
-from dqn.dqn import DQNAgent
-from dqn.objectives import huber_loss
-from dqn.preprocessors import NBVPreprocessor
-from dqn.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
-from dqn.memory import BasicMemory, NaiveMemory
-from dqn.constants import model_path, model_file
-from dqn.models import create_model
-from dqn.utils import get_output_folder
+from DQN.dqn.dqn import DQNAgent
+from DQN.dqn.objectives import huber_loss
+from DQN.dqn.preprocessors import NBVPreprocessor
+from DQN.dqn.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
+from DQN.dqn.memory import BasicMemory, NaiveMemory
+from DQN.dqn.constants import model_path, model_file
+from DQN.dqn.models import create_model
+from DQN.dqn.utils import get_output_folder
 
 from nbv.envs import NBVEnvV0
 
