@@ -142,8 +142,12 @@ def main():  # noqa: D103
     if args.phase == 'train':
         dqnAgent.fit(env, num_iterations)
     elif args.phase == 'test':
-        dqnAgent.policy = GreedyEpsilonPolicy(epsilon, num_actions)
-        dqnAgent.evaluate(env, num_episode)
+        if args.env == 'Next-Best-View-v0':
+            dqnAgent.policy = GreedyEpsilonPolicy(0, num_actions)
+            env.test(dqnAgent, num_episode)
+        else:
+            dqnAgent.policy = GreedyEpsilonPolicy(epsilon, num_actions)
+            dqnAgent.evaluate(env, num_episode)
     elif args.phase == 'video':
         dqnAgent.policy = GreedyEpsilonPolicy(epsilon, num_actions)
         points = [''] + [point for point in video_capture_points]
