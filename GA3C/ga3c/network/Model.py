@@ -1,8 +1,12 @@
 from keras.layers import Flatten, Dense, Input, Convolution2D
 from keras.models import Model
 from keras.applications.resnet50 import ResNet50
+from GA3C.ga3c.Config import Config
+import keras.backend as K
 
 def create_p_and_v_models(model_name, num_actions, img_height, img_width, img_channels):
+	K.set_learning_phase(Config.TRAIN_MODELS)
+
 	if 'nbv' in model_name:
 		p_model, v_model = create_nbv_models(num_actions, img_height, img_width, img_channels)
 	elif 'atari' in model_name:
