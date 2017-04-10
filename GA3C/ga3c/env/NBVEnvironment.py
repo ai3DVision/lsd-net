@@ -2,6 +2,7 @@ from GA3C.ga3c.Config import Config
 from GA3C.ga3c.GameManager import GameManager
 import numpy as np
 from nbv.envs import NBVEnvV0
+from PIL import Image
 
 class NBVEnvironment():
     def __init__(self):
@@ -20,6 +21,12 @@ class NBVEnvironment():
 
     def step(self, action):
         observation, reward, done, _ = self.game.step(action)
+
+        img = Image.fromarray(observation)
+        img = img.resize((Config.IMAGE_WIDTH, Config.IMAGE_HEIGHT))
+        observation = np.array(img)
+        observation = observation.astype('float32') / 255.
+        
         self.previous_state = self.current_state
         self.current_state = observation
         return reward, done
