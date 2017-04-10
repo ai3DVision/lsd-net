@@ -107,7 +107,7 @@ class ProcessAgent(Process):
 
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 if len(updated_exps) == 0:
-                    yield None, None, None, reward_sum
+                    yield None, None, None, 0
                 else:
                     x_, r_, a_ = self.convert_data(updated_exps)
                     yield x_, r_, a_, reward_sum
