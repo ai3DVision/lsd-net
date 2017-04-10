@@ -36,6 +36,9 @@ Config.EPISODES = 50000
 Config.TENSORBOARD = True
 Config.TENSORBOARD_UPDATE_FREQUENCY = 100
 
+Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY = True
+Config.DECAY_NUM_STEPS = 200000
+
 gym.undo_logger_setup()
 
 # Start main program
