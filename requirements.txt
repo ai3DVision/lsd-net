@@ -1,6 +1,8 @@
 keras
-tensorflow
+tensorflow-gpu
 pillow
 matplotlib
 numpy
+gym
+h5py
 -e .
