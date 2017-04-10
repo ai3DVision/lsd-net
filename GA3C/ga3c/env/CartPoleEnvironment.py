@@ -1,5 +1,5 @@
-from ga3c.Config import Config
-from ga3c.GameManager import GameManager
+from GA3C.ga3c.Config import Config
+from GA3C.ga3c.GameManager import GameManager
 import numpy as np
 
 class CartPoleEnvironment():

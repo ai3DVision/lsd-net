@@ -29,7 +29,7 @@ from threading import Thread
 import numpy as np
 import time
 
-from ga3c.Config import Config
+from GA3C.ga3c.Config import Config
 
 
 class ThreadDynamicAdjustment(Thread):

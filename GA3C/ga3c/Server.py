@@ -28,14 +28,14 @@ from multiprocessing import Queue
 
 import time
 
-from ga3c.Config import Config
-from ga3c.ProcessAgent import ProcessAgent
-from ga3c.ProcessStats import ProcessStats
-from ga3c.ThreadDynamicAdjustment import ThreadDynamicAdjustment
-from ga3c.ThreadPredictor import ThreadPredictor
-from ga3c.ThreadTrainer import ThreadTrainer
-from ga3c.network.Network import Network
-from ga3c.env.Environment import Environment
+from GA3C.ga3c.Config import Config
+from GA3C.ga3c.ProcessAgent import ProcessAgent
+from GA3C.ga3c.ProcessStats import ProcessStats
+from GA3C.ga3c.ThreadDynamicAdjustment import ThreadDynamicAdjustment
+from GA3C.ga3c.ThreadPredictor import ThreadPredictor
+from GA3C.ga3c.ThreadTrainer import ThreadTrainer
+from GA3C.ga3c.network.Network import Network
+from GA3C.ga3c.env.Environment import Environment
 
 class Server:
     def __init__(self):

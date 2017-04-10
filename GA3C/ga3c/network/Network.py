@@ -3,9 +3,9 @@ import re
 import numpy as np
 import tensorflow as tf
 
-from ga3c.Config import Config
-from ga3c.network.Model import create_p_and_v_models
-from ga3c.utils import mean_huber_loss
+from GA3C.ga3c.Config import Config
+from GA3C.ga3c.network.Model import create_p_and_v_models
+from GA3C.ga3c.utils import mean_huber_loss
 
 class Network:
     def __init__(self, device, model_name, num_actions):

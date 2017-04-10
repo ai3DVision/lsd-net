@@ -1,6 +1,6 @@
-from ga3c.Config import Config
-from ga3c.env.AtariEnvironment import AtariEnvironment
-from ga3c.env.CartPoleEnvironment import CartPoleEnvironment
+from GA3C.ga3c.Config import Config
+from GA3C.ga3c.env.AtariEnvironment import AtariEnvironment
+from GA3C.ga3c.env.CartPoleEnvironment import CartPoleEnvironment
 
 def Environment():
     if 'atari' in Config.NETWORK_NAME:
