@@ -6,6 +6,14 @@
 * tensorflow  1.0.1
 * gym 0.8.1
 
+## How setup the NBV env
+Download the modelnet40v1 data from http://maxwell.cs.umass.edu/mvcnn-data/ and put the modelnet40v1 folder inside the nbv/envs/ folder
+
+## How test the NBV env
+```
+python test_env.py
+```
+
 ## How to train the DQN on NBV
 ```
 python dqn_nbv.py
@@ -15,9 +23,3 @@ python dqn_nbv.py
 ```
 python dqn_nbv.py --phase test --dir {WEIGHT DIRECTORY}
 ```
-
-## How test the NBV env
-1) Download the modelnet40v1 data from http://maxwell.cs.umass.edu/mvcnn-data/
-2) Put the modelnet40v1 folder inside the nbv/envs/ folder
-3) Run 'pip install -r requirements.txt'
-4) Run 'python test_env.py' to test the NBV env
