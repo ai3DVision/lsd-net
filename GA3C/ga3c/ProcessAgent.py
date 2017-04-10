@@ -81,7 +81,7 @@ class ProcessAgent(Process):
         return p, v
 
     def select_action(self, prediction):
-        if not Config.TRAIN_MODELS and Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY:
+        if Config.TRAIN_MODELS and Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY:
             action = self.policy.select_action(prediction)
         elif Config.PLAY_MODE and Config.GREEDY_POLICY:
             action = np.argmax(prediction)
