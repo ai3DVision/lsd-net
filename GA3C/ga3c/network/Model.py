@@ -1,13 +1,21 @@
 from keras.layers import Flatten, Dense, Input, Convolution2D
 from keras.models import Model
+from keras.applications.resnet50 import ResNet50
 
 def create_p_and_v_models(model_name, num_actions, img_height, img_width, img_channels):
-	if 'atari' in model_name:
-		return create_atari_models(num_actions, img_height, img_width, img_channels)
+	if 'nbv' in model_name:
+		p_model, v_model = create_nbv_models(num_actions, img_height, img_width, img_channels)
+	elif 'atari' in model_name:
+		p_model, v_model = create_atari_models(num_actions, img_height, img_width, img_channels)
 	elif 'cartpole' in model_name:
-		return create_cartpole_models(num_actions, img_height, img_width, img_channels)
+		p_model, v_model = create_cartpole_models(num_actions, img_height, img_width, img_channels)
 	else:
 		raise('Model does not exist.')
+
+	print(p_model.summary())
+	print(v_model.summary())
+
+	return p_model, v_model
 
 def create_atari_models(num_actions, img_height, img_width, img_channels):
 	inputs = Input(shape=(img_height, img_width, img_channels))
@@ -32,6 +40,21 @@ def create_cartpole_models(num_actions, img_height, img_width, img_channels):
 	fc3 = Dense(32, activation="relu")(fc2)
 	action_probs = Dense(name="p", output_dim=num_actions, activation='softmax')(fc3)
 	state_value = Dense(name="v", output_dim=1, activation='linear')(fc3)
+
+	p_model = Model(input=inputs, output=action_probs)
+	v_model = Model(input=inputs, output=state_value)
+
+	return p_model, v_model
+
+def create_nbv_models(num_actions, img_height, img_width, img_channels):
+	assert(img_channels == 3)
+	assert(img_height >= 197 and img_width >= 197)
+
+	inputs = Input(shape=(img_height, img_width, img_channels))
+	resnet50 = ResNet50(include_top=False, weights='imagenet')(inputs)
+	flatten = Flatten()(resnet50)
+	action_probs = Dense(name="p", output_dim=num_actions, activation='softmax')(flatten)
+	state_value = Dense(name="v", output_dim=1, activation='linear')(flatten)
 
 	p_model = Model(input=inputs, output=action_probs)
 	v_model = Model(input=inputs, output=state_value)
