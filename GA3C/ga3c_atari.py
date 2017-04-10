@@ -51,6 +51,7 @@ Config.PREDICTORS = 1
 Config.TRAINERS = 1
 Config.DYNAMIC_SETTINGS = False
 Config.GREEDY_POLICY = False
+Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY = False
 
 gym.undo_logger_setup()
 
