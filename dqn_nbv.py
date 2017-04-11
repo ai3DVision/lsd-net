@@ -92,16 +92,16 @@ def main():  # noqa: D103
                              model_name=args.model)
     preprocessor = NBVPreprocessor(args.input_shape)
     policy = LinearDecayGreedyEpsilonPolicy(num_actions, start_value, end_value, num_steps)
-    memory_size = 200000
+    memory_size = 100000
     gamma = 0.5
     target_update_freq = 2000
     num_burn_in = 1000
     train_freq = 1
-    batch_size = 32
-    save_network_freq = 2000
+    batch_size = 8
+    save_network_freq = 4000
     video_capture_points = []
     eval_train_freq = 5000
-    eval_train_num_ep = 10
+    eval_train_num_ep = 40
     print_summary = True
 
     if experience_replay:
