@@ -8,7 +8,8 @@ import gym
 
 from GA3C.ga3c.Config import Config
 from GA3C.ga3c.Server import Server
-from GA3C.ga3c.env.CartPoleEnvironment import CartPoleEnvironment
+from GA3C.ga3c.env.Environment import Environment
+from GA3C.ga3c.network.Network import Network
 
 # Parse arguments
 for i in range(1, len(sys.argv)):
@@ -19,28 +20,37 @@ for i in range(1, len(sys.argv)):
 
 Config.NETWORK_NAME = 'nbv'
 Config.GAME = 'Next-Best-View-v0'
-Config.PLAY_MODE = False
-Config.AGENTS = 8
-# Config.PREDICTORS = 1
-# Config.TRAINERS = 1
-# Config.DYNAMIC_SETTINGS = False
 
 Config.STACKED_FRAMES = 3
 Config.IMAGE_WIDTH = 224
 Config.IMAGE_HEIGHT = 224
 
-Config.EPISODES = 200000
+if Config.TRAIN_MODELS:
+	Config.PLAY_MODE = False
+	Config.AGENTS = 8
+	# Config.PREDICTORS = 1
+	# Config.TRAINERS = 1
+	# Config.DYNAMIC_SETTINGS = False
 
-Config.TENSORBOARD = True
-Config.TENSORBOARD_UPDATE_FREQUENCY = 100
+	Config.EPISODES = 200000
 
-Config.GREEDY_POLICY = False
-Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY = False
-Config.EPSILON_START = 1
-Config.EPSILON_END = 0.1
-Config.DECAY_NUM_STEPS = 400000
+	Config.TENSORBOARD = True
+	Config.TENSORBOARD_UPDATE_FREQUENCY = 100
 
-gym.undo_logger_setup()
+	Config.GREEDY_POLICY = False
+	Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY = True
+	Config.EPSILON_START = 1
+	Config.EPSILON_END = 0.1
+	Config.DECAY_NUM_STEPS = 400000
 
-# Start main program
-Server().main()
+	gym.undo_logger_setup()
+
+	# Start main program
+	Server().main()
+else:
+	env = gym.make(Config.GAME)
+
+	network = Network(Config.DEVICE, Config.NETWORK_NAME, env.action_space.n)
+	network.load()
+
+	env.test_ga3c(network, num_episode=1)
