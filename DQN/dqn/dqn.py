@@ -447,6 +447,8 @@ class DQNAgent:
                 else:
                     state = observation
 
+                sys.stdout.flush()
+                
     def evaluate(self, env, num_episodes, max_episode_length=None):
         """Test your agent with a provided environment.
         
