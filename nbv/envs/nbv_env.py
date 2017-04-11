@@ -185,7 +185,7 @@ class NBVEnvV2(NBVEnvV0):
 	def step(self, action):
 		obs, reward, is_terminal, info = NBVEnvV0.step(self, action)
 		if self.actions[action] != 'CW' \
-		   and self.actions[action] != 'CCW':
+		   and self.actions[action] != 'CCW' \
 		   and self.actions[action] != self.category:
 			reward = -1
 		return obs, reward, is_terminal, info
@@ -197,7 +197,7 @@ class NBVEnvV3(NBVEnvV1):
 	def step(self, action):
 		obs, reward, is_terminal, info = NBVEnvV1.step(self, action)
 		if self.actions[action] != 'CW' \
-		   and self.actions[action] != 'CCW':
+		   and self.actions[action] != 'CCW' \
 		   and self.actions[action] != self.category:
 			reward = -1
 		return obs, reward, is_terminal, info
