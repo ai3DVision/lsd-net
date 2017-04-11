@@ -144,7 +144,7 @@ def main():  # noqa: D103
     elif args.phase == 'test':
         if args.env == 'Next-Best-View-v0':
             dqnAgent.policy = GreedyEpsilonPolicy(0, num_actions)
-            env.test(dqnAgent, num_episode)
+            env.test_dqn(dqnAgent, num_episode)
         else:
             dqnAgent.policy = GreedyEpsilonPolicy(epsilon, num_actions)
             dqnAgent.evaluate(env, num_episode)

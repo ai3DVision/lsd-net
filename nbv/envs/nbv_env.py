@@ -131,7 +131,7 @@ class NBVEnvV0(Env):
 		image = np.array(Image.open(image_path))
 		return image
 
-	def test(self, agent, num_episode, data_type='test'):
+	def test_dqn(self, dqnAgent, num_episode, data_type='test'):
 		num_correct = 0
 		total_groups = 0
 		accuracies = []
@@ -150,7 +150,7 @@ class NBVEnvV0(Env):
 						state = np.array(Image.open(image_path))
 
 						state = np.array([state])
-						action, _ = agent.select_action(state)
+						action, _ = dqnAgent.select_action(state)
 						action = action[0]
 
 						if self.actions[action] == 'CW':
