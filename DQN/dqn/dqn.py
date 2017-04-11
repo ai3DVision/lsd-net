@@ -374,7 +374,7 @@ class DQNAgent:
             # Save network weights
             if iteration % self.save_network_freq == 0 and iteration > self.num_burn_in:
                 self.extended_q_network.save_weights(
-                    model_file % (self.model_name, ''))
+                    model_file % (self.model_name, iteration))
 
             # Update target network
             if self.target_fixing \
