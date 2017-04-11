@@ -37,5 +37,5 @@ python ga3c_nbv.py
 
 ## Test the GA3C on NBV
 ```
-python ga3c_nbv.py TRAIN_MODELS=''
+python ga3c_nbv.py TRAIN_MODELS='' LOAD_EPISODE={CHECKPOINT EPISODE}
 ```
