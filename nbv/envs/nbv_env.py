@@ -3,9 +3,9 @@ import ast
 import random
 from PIL import Image
 import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
+# import matplotlib
+# matplotlib.use('TkAgg')
+# import matplotlib.pyplot as plt
 import time
 from gym import Env, spaces
 import sys
@@ -102,11 +102,12 @@ class NBVEnvV0(Env):
 		return obs, reward, is_terminal, info
 
 	def render(self, mode='human', close=False):
-		plt.imshow(self.image)
-		plt.show(block=False)
-		time.sleep(self.render_delay)
-		plt.close()
-
+		# plt.imshow(self.image)
+		# plt.show(block=False)
+		# time.sleep(self.render_delay)
+		# plt.close()
+		pass
+		
 	def close(self):
 		pass
 
