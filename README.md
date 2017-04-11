@@ -29,3 +29,13 @@ python dqn_nbv.py
 ```
 python dqn_nbv.py --phase test --dir {WEIGHT DIRECTORY}
 ```
+
+## Train the GA3C on NBV
+```
+python ga3c_nbv.py
+```
+
+## Test the GA3C on NBV
+```
+python ga3c_nbv.py TRAIN_MODELS=''
+```
