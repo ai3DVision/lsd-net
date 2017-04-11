@@ -168,6 +168,43 @@ class NBVEnvV0(Env):
 		print('The accuracy is %f +/- %f' % (np.mean(accuracies), np.std(accuracies)))
 		sys.stdout.flush()
 
+	def test_ga3c(self, network, num_episode, data_type='test'):
+		num_correct = 0
+		total_groups = 0
+		accuracies = []
+
+		for _ in range(num_episode):
+			for category in self.data[data_type]:
+				for group in self.data[data_type][category]:
+					total_groups = total_groups + 1
+					group_size = self.data[data_type][category][group]['size']
+					image_idx = random.randint(1, group_size) - 1
+
+					# Max steps is self.max_steps
+					for _ in range(self.max_steps):
+						image_path = self.data[data_type][category][group]['images'][image_idx]
+						image_path = os.path.join(self.dir_path, image_path)
+						state = np.array(Image.open(image_path))
+
+						state = np.array([state]) / 255.
+						p, v = network.predict_p_and_v(state)
+						action = np.argmax(p[0])
+						
+						if self.actions[action] == 'CW':
+							image_idx = (image_idx + 1) % group_size
+						elif self.actions[action] == 'CCW':
+							image_idx = (image_idx - 1) % group_size
+						elif self.actions[action] == category:
+							num_correct = num_correct + 1
+							break
+						else:
+							break
+
+			accuracies.append(num_correct / float(total_groups))
+
+		print('The accuracy is %f +/- %f' % (np.mean(accuracies), np.std(accuracies)))
+		sys.stdout.flush()
+
 class NBVEnvV1(NBVEnvV0):
 	def __init__(self, max_steps):
 		NBVEnvV0.__init__(self, max_steps)
