@@ -16,8 +16,7 @@ class NBVEnvironment():
 
     def reset(self):
         self.previous_state = None
-        self.current_state = None
-        self.game.reset()
+        self.current_state = self.game.reset()
 
     def step(self, action):
         observation, reward, done, _ = self.game.step(action)
