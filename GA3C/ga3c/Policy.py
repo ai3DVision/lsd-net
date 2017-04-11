@@ -71,7 +71,6 @@ class LinearDecayGreedyEpsilonPolicy(Policy):
           Selected action.
         """
         if np.random.uniform() < self.epsilon:
-
             action = np.random.randint(self.num_actions)
         else:
             action = np.argmax(q_values)

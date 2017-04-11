@@ -20,7 +20,7 @@ for i in range(1, len(sys.argv)):
 Config.NETWORK_NAME = 'nbv'
 Config.GAME = 'Next-Best-View-v0'
 Config.PLAY_MODE = False
-Config.AGENTS = 4
+Config.AGENTS = 8
 # Config.PREDICTORS = 1
 # Config.TRAINERS = 1
 # Config.DYNAMIC_SETTINGS = False
@@ -29,8 +29,7 @@ Config.STACKED_FRAMES = 3
 Config.IMAGE_WIDTH = 224
 Config.IMAGE_HEIGHT = 224
 
-Config.TMAX = 4
-Config.EPISODES = 50000
+Config.EPISODES = 200000
 
 Config.TENSORBOARD = True
 Config.TENSORBOARD_UPDATE_FREQUENCY = 100
