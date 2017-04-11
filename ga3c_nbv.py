@@ -38,7 +38,7 @@ Config.GREEDY_POLICY = False
 Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY = False
 Config.EPSILON_START = 1
 Config.EPSILON_END = 0.1
-Config.DECAY_NUM_STEPS = 200000
+Config.DECAY_NUM_STEPS = 400000
 
 gym.undo_logger_setup()
 
