@@ -177,3 +177,27 @@ class NBVEnvV1(NBVEnvV0):
 		if self.steps < self.max_steps:
 			is_terminal = 0
 		return obs, reward, is_terminal, info
+
+class NBVEnvV2(NBVEnvV0):
+	def __init__(self, max_steps):
+		NBVEnvV0.__init__(self, max_steps)
+
+	def step(self, action):
+		obs, reward, is_terminal, info = NBVEnvV0.step(self, action)
+		if self.actions[action] != 'CW' \
+		   and self.actions[action] != 'CCW':
+		   and self.actions[action] != self.category:
+			reward = -1
+		return obs, reward, is_terminal, info
+
+class NBVEnvV3(NBVEnvV1):
+	def __init__(self, max_steps):
+		NBVEnvV1.__init__(self, max_steps)
+
+	def step(self, action):
+		obs, reward, is_terminal, info = NBVEnvV1.step(self, action)
+		if self.actions[action] != 'CW' \
+		   and self.actions[action] != 'CCW':
+		   and self.actions[action] != self.category:
+			reward = -1
+		return obs, reward, is_terminal, info
