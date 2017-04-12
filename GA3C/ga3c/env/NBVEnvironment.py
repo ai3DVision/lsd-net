@@ -16,16 +16,21 @@ class NBVEnvironment():
 
     def reset(self):
         self.previous_state = None
-        self.current_state = self.game.reset()
+        state = self.game.reset()
+        state = NBVEnvironment._preprocess(state)
+        self.current_state = state
 
     def step(self, action):
-        observation, reward, done, _ = self.game.step(action)
-
-        img = Image.fromarray(observation)
-        img = img.resize((Config.IMAGE_WIDTH, Config.IMAGE_HEIGHT))
-        observation = np.array(img)
-        observation = observation.astype('float32') / 255.
-        
+        state, reward, done, _ = self.game.step(action)
+        state = NBVEnvironment._preprocess(state)
         self.previous_state = self.current_state
-        self.current_state = observation
+        self.current_state = state
         return reward, done
+
+    @staticmethod
+    def _preprocess(state):
+        img = Image.fromarray(state)
+        img = img.resize((Config.IMAGE_WIDTH, Config.IMAGE_HEIGHT))
+        state = np.array(img)
+        state = state.astype('float32') / 255.
+        return state
