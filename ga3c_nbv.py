@@ -44,6 +44,9 @@ if Config.TRAIN_MODELS:
 	Config.EPSILON_END = 0.1
 	Config.DECAY_NUM_STEPS = 400000
 
+	Config.LEARNING_RATE_START = 0.00001
+	Config.LEARNING_RATE_END = 0.00001
+
 	gym.undo_logger_setup()
 
 	# Start main program
