@@ -137,6 +137,7 @@ class NBVEnvV0(Env):
 		accuracies = []
 
 		for _ in range(num_episode):
+			print('Testing episode %d' % num_episode)
 			for category in self.data[data_type]:
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
@@ -163,8 +164,11 @@ class NBVEnvV0(Env):
 						else:
 							break
 			
-			accuracies.append(num_correct / float(total_groups))
-
+			accuracy = num_correct / float(total_groups)
+			print('Accuracy: %f' % accuracy)
+			accuracies.append(accuracy)
+			sys.stdout.flush()
+			
 		print('The accuracy is %f +/- %f' % (np.mean(accuracies), np.std(accuracies)))
 		sys.stdout.flush()
 
@@ -174,6 +178,7 @@ class NBVEnvV0(Env):
 		accuracies = []
 
 		for _ in range(num_episode):
+			print('Testing episode %d' % num_episode)
 			for category in self.data[data_type]:
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
@@ -200,7 +205,10 @@ class NBVEnvV0(Env):
 						else:
 							break
 
-			accuracies.append(num_correct / float(total_groups))
+			accuracy = num_correct / float(total_groups)
+			print('Accuracy: %f' % accuracy)
+			accuracies.append(accuracy)
+			sys.stdout.flush()
 
 		print('The accuracy is %f +/- %f' % (np.mean(accuracies), np.std(accuracies)))
 		sys.stdout.flush()
