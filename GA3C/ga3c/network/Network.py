@@ -59,17 +59,18 @@ class Network:
         self.softmax_p = p_model(self.x)
         self.logits_v = v_model(self.x)
 
-        logits_v_flat = tf.reshape(self.logits_v, shape=[-1]);
-        logits_p_masked = tf.reduce_sum(tf.multiply(self.softmax_p, self.action_index), reduction_indices=1)
-        self.cost_p = mean_huber_loss(logits_p_masked, self.y_r - logits_v_flat, max_grad=Config.GRAD_CLIP_NORM)
-        self.cost_v = tf.reduce_mean(tf.square(self.y_r - self.logits_v)) / 2
+        if Config.TRAIN_MODELS:
+            logits_v_flat = tf.reshape(self.logits_v, shape=[-1]);
+            logits_p_masked = tf.reduce_sum(tf.multiply(self.softmax_p, self.action_index), reduction_indices=1)
+            self.cost_p = mean_huber_loss(logits_p_masked, self.y_r - logits_v_flat, max_grad=Config.GRAD_CLIP_NORM)
+            self.cost_v = tf.reduce_mean(tf.square(self.y_r - self.logits_v)) / 2
 
-        total_loss = self.cost_p + self.cost_v
+            total_loss = self.cost_p + self.cost_v
 
-        self.global_step = tf.Variable(0, trainable=False, name='step')
-        self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
-        optimizer = tf.train.AdamOptimizer(self.var_learning_rate)
-        self.train_op = optimizer.minimize(total_loss, global_step=self.global_step)
+            self.global_step = tf.Variable(0, trainable=False, name='step')
+            self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
+            optimizer = tf.train.AdamOptimizer(self.var_learning_rate)
+            self.train_op = optimizer.minimize(total_loss, global_step=self.global_step)
 
     def _create_tensor_board(self):
         summaries = tf.get_collection(tf.GraphKeys.SUMMARIES)
