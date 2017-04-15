@@ -82,7 +82,7 @@ def main():  # noqa: D103
     target_fixing = args.c
 
     # Evaluate number of episode (given the model number)
-    num_episode = 100
+    num_episode = 20
 
     # DQNAgent parameters
     num_actions = env.action_space.n
@@ -142,7 +142,7 @@ def main():  # noqa: D103
     if args.phase == 'train':
         dqnAgent.fit(env, num_iterations)
     elif args.phase == 'test':
-        if args.env == 'Next-Best-View-v0':
+        if 'Next-Best-View' in args.env:
             dqnAgent.policy = GreedyEpsilonPolicy(0, num_actions)
             env.test_dqn(dqnAgent, num_episode)
         else:
