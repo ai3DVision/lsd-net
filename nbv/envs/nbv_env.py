@@ -136,8 +136,8 @@ class NBVEnvV0(Env):
 		total_groups = 0
 		accuracies = []
 
-		for _ in range(num_episode):
-			print('Testing episode %d' % num_episode)
+		for i in range(num_episode):
+			print('Testing episode %d' % i)
 			for category in self.data[data_type]:
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
@@ -177,8 +177,8 @@ class NBVEnvV0(Env):
 		total_groups = 0
 		accuracies = []
 
-		for _ in range(num_episode):
-			print('Testing episode %d' % num_episode)
+		for i in range(num_episode):
+			print('Testing episode %d' % i)
 			for category in self.data[data_type]:
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
