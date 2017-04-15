@@ -11,6 +11,13 @@ from GA3C.ga3c.Server import Server
 from GA3C.ga3c.env.Environment import Environment
 from GA3C.ga3c.network.Network import Network
 
+import tensorflow as tf
+from keras.backend.tensorflow_backend import set_session
+
+config = tf.ConfigProto()
+config.gpu_options.per_process_gpu_memory_fraction = 0.3
+set_session(tf.Session(config=config))
+
 # Parse arguments
 for i in range(1, len(sys.argv)):
     # Config arguments should be in format of Config=Value
