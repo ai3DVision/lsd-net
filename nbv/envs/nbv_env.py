@@ -145,14 +145,19 @@ class NBVEnvV0(Env):
 					image_idx = random.randint(1, group_size) - 1
 
 					# Max steps is self.max_steps
-					for _ in range(self.max_steps):
+					for j in range(self.max_steps):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
 						state = np.array(Image.open(image_path))
 
 						state = np.array([state])
-						action, _ = dqnAgent.select_action(state)
+						action, q_values = dqnAgent.select_action(state)
 						action = action[0]
+
+						if j == self.max_steps-1:
+							q_values = q_values[0]
+							q_values = q_values[0:-2]
+							action = dqnAgent.policy.select_action(q_values)
 
 						if self.actions[action] == 'CW':
 							image_idx = (image_idx + 1) % group_size
@@ -186,7 +191,7 @@ class NBVEnvV0(Env):
 					image_idx = random.randint(1, group_size) - 1
 
 					# Max steps is self.max_steps
-					for _ in range(self.max_steps):
+					for j in range(self.max_steps):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
 						state = np.array(Image.open(image_path))
@@ -195,6 +200,11 @@ class NBVEnvV0(Env):
 						p, v = network.predict_p_and_v(state)
 						action = np.argmax(p[0])
 						
+						if j == self.max_steps-1:
+							p = p[0]
+							p = p[0:-2]
+							action = np.argmax(p)
+
 						if self.actions[action] == 'CW':
 							image_idx = (image_idx + 1) % group_size
 						elif self.actions[action] == 'CCW':
