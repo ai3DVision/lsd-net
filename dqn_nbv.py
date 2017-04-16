@@ -23,7 +23,7 @@ from DQN.dqn.models import create_model
 from DQN.dqn.utils import get_output_folder
 
 from nbv.envs import NBVEnvV0
-
+from keras.backend.tensorflow_backend import set_session
 def main():  # noqa: D103
     parser = argparse.ArgumentParser(description='Run DQN on Atari Breakout')
     parser.add_argument('--env', default='Next-Best-View-v0', help='Atari env name')
@@ -50,7 +50,9 @@ def main():  # noqa: D103
                 else os.path.join(args.output, args.dir)
     args.model = 'double_' + args.model if args.double else args.model
     args.model = args.model + '-c' if not args.c else args.model
-
+    config = tf.ConfigProto()
+    config.gpu_options.per_process_gpu_memory_fraction = 0.3
+    set_session(tf.Session(config=config))
     # create the environment
     env = gym.make(args.env)
 
