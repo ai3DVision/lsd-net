@@ -99,7 +99,7 @@ def create_linear_Q_network(window, input_shape, num_actions):
 	return model
 
 def create_resnet_Q_network(window, input_shape, num_actions):
-	assert(window == 1)
+	assert(window == 3)
 	assert(input_shape[0] >= 197 and input_shape[1] >= 197)
 
 	with tf.name_scope('Input'):
@@ -116,7 +116,7 @@ def create_resnet_Q_network(window, input_shape, num_actions):
 	return model
 
 def create_resnet_LSTM_network(window, input_shape, num_actions):
-	assert(window == 1)
+	assert(window == 3)
 	assert(input_shape[0] >= 197 and input_shape[1] >= 197)
 
 	with tf.name_scope('Input'):
