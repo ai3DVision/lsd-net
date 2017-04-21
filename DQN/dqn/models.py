@@ -125,14 +125,15 @@ def create_resnet_LSTM_network(window, input_shape, num_actions):
 		resnet50 = ResNet50(include_top=False, weights='imagenet')(input)
 	with tf.name_scope('Flatten'):
 		flatten = Flatten()(resnet50)
-	with tf.name_scope('Output'):
-		output = Dense(256)(flatten)
+	with tf.name_scope('FC'):
+		fc = Dense(256)(flatten)
 	with tf.name_scope('Reshape'):
-		embedded = Reshape((1,256))(output)
+		reshape = Reshape((1,256))(fc)
 	with tf.name_scope('LSTM'):
-		lstm = LSTM(64)(embedded)
+		lstm = LSTM(64)(reshape)
 	with tf.name_scope('Output'):
 		output = Dense(num_actions, activation='softmax')(lstm)
+
 	model = Model(input=input, output=output)
 
 	return model
@@ -151,9 +152,9 @@ def create_deep_LSTM_network(window, input_shape, num_actions):
 	with tf.name_scope('FC'):
 		x = Dense(512, activation='relu')(x)
 	with tf.name_scope('Reshape'):
-		embedded = Reshape((1,num_actions))(out)
+		x = Reshape((1,512))(x)
 	with tf.name_scope('LSTM'):
-		lstm = LSTM(64)(embedded)
+		lstm = LSTM(64)(x)
 	with tf.name_scope('Output'):
 		output = Dense(num_actions, activation='softmax')(lstm)
 	model = Model(input=input, output=output)
