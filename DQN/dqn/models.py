@@ -103,7 +103,7 @@ def create_resnet_Q_network(window, input_shape, num_actions):
 	assert(input_shape[0] >= 197 and input_shape[1] >= 197)
 
 	with tf.name_scope('Input'):
-		input = Input(shape=input_shape+(3,))
+		input = Input(shape=input_shape+(window,))
 	with tf.name_scope('ResNet50'):
 		resnet50 = ResNet50(include_top=False, weights='imagenet')(input)
 	with tf.name_scope('Flatten'):

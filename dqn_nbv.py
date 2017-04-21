@@ -80,6 +80,9 @@ def main():  # noqa: D103
     # Number of frames in the sequence
     window = 1
 
+    # Number of channels in image
+    num_channels = 3
+    
     # Use experience replay
     experience_replay = args.c
 
@@ -91,7 +94,7 @@ def main():  # noqa: D103
 
     # DQNAgent parameters
     num_actions = env.action_space.n
-    q_network = create_model(window, 
+    q_network = create_model(num_channels, 
                              args.input_shape, 
                              num_actions, 
                              model_name=args.model)
