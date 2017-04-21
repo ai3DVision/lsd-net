@@ -1,5 +1,6 @@
 import tensorflow as tf
 from keras.layers import Input, Dense, Flatten, Convolution2D, Activation, Lambda
+from keras.layers import Embedding,LSTM
 from keras.models import Model, Sequential
 import keras.backend as K
 from keras.applications.resnet50 import ResNet50
@@ -36,8 +37,12 @@ def create_model(window, input_shape, num_actions, model_name='q_network'):
     	model = create_dueling_deep_Q_network(window, input_shape, num_actions)
     elif 'resnet_Q_network' in model_name:
     	model = create_resnet_Q_network(window, input_shape, num_actions)
+    elif 'resnet_LSTM_network' in model_name:
+    	model = create_resnet_LSTM_network(window, input_shape, num_actions)
     elif 'deep_Q_network' in model_name:
         model = create_deep_Q_network(window, input_shape, num_actions)
+    elif 'deep_LSTM_network' in model_name:
+        model = create_deep_LSTM_network(window, input_shape, num_actions)
     elif 'linear_Q_network' in model_name:
         model = create_linear_Q_network(window, input_shape, num_actions)
     elif 'cartpole' in model_name:
@@ -109,6 +114,54 @@ def create_resnet_Q_network(window, input_shape, num_actions):
 	model = Model(input=input, output=output)
 
 	return model
+
+def create_resnet_LSTM_network(window, input_shape, num_actions):
+	assert(window == 1)
+	assert(input_shape[0] >= 197 and input_shape[1] >= 197)
+
+	with tf.name_scope('Input'):
+		input = Input(shape=input_shape+(3,))
+	with tf.name_scope('ResNet50'):
+		resnet50 = ResNet50(include_top=False, weights='imagenet')(input)
+	with tf.name_scope('Flatten'):
+		flatten = Flatten()(resnet50)
+	with tf.name_scope('Output'):
+		output = Dense(num_actions)(flatten)
+	with tf.name_scope('Embedding'):
+		embedded = Embedding(output_dim=64,input_dim=64)(output)
+	with tf.name_scope('LSTM'):
+		lstm = LSTM(64)(embedded)
+	with tf.name_scope('Output'):
+		output = Dense(num_actions, activation='softmax')(lstm)
+	model = Model(input=input, output=output)
+
+	return model
+
+def create_deep_LSTM_network(window, input_shape, num_actions):
+	with tf.name_scope('Input'):
+		input = Input(shape=input_shape+(window,))
+	with tf.name_scope('Conv1'):
+		x = Convolution2D(32, 8, 8, subsample=(4, 4), activation='relu')(input)
+	with tf.name_scope('Conv2'):
+		x = Convolution2D(64, 4, 4, subsample=(2, 2), activation='relu')(x)
+	with tf.name_scope('Conv3'):
+		x = Convolution2D(64, 3, 3, subsample=(1, 1), activation='relu')(x)
+	with tf.name_scope('Flatten'):
+		x = Flatten()(x)
+	with tf.name_scope('FC'):
+		x = Dense(512, activation='relu')(x)
+	with tf.name_scope('Output'):
+		out = Dense(num_actions, activation='linear')(x)
+	with tf.name_scope('Embedding'):
+		embedded = Embedding(output_dim=64,input_dim=42)(out)
+	with tf.name_scope('LSTM'):
+		lstm = LSTM(64)(embedded)
+	with tf.name_scope('Output'):
+		output = Dense(num_actions, activation='softmax')(lstm)
+	model = Model(input=input, output=output)
+
+	return model
+
 
 def create_deep_Q_network(window, input_shape, num_actions):
 	with tf.name_scope('Input'):
