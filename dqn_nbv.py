@@ -80,7 +80,7 @@ def main():  # noqa: D103
     # Number of frames in the sequence
     window = 1
 
-    # Number of channels in image
+    # Number of channels in network input
     num_channels = 3
     
     # Use experience replay
