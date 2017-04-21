@@ -150,9 +150,9 @@ def create_deep_LSTM_network(window, input_shape, num_actions):
 	with tf.name_scope('Flatten'):
 		x = Flatten()(x)
 	with tf.name_scope('FC'):
-		x = Dense(512, activation='relu')(x)
+		x = Dense(256, activation='relu')(x)
 	with tf.name_scope('Reshape'):
-		x = Reshape((1,512))(x)
+		x = Reshape((1,256))(x)
 	with tf.name_scope('LSTM'):
 		lstm = LSTM(64)(x)
 	with tf.name_scope('Output'):
