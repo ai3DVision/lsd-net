@@ -341,6 +341,7 @@ class DQNAgent:
             # Given state, select an action
             state = np.array([state])
             action, q_values = self.select_action(state)
+            #print(q_values)
             action = action[0]
 
             # Perform action on env
