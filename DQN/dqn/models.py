@@ -1,6 +1,6 @@
 import tensorflow as tf
 from keras.layers import Input, Dense, Flatten, Convolution2D, Activation, Lambda
-from keras.layers import Embedding,LSTM
+from keras.layers import Embedding,LSTM,Reshape
 from keras.models import Model, Sequential
 import keras.backend as K
 from keras.applications.resnet50 import ResNet50
@@ -127,8 +127,8 @@ def create_resnet_LSTM_network(window, input_shape, num_actions):
 		flatten = Flatten()(resnet50)
 	with tf.name_scope('Output'):
 		output = Dense(num_actions)(flatten)
-	with tf.name_scope('Embedding'):
-		embedded = Embedding(output_dim=64,input_dim=64)(output)
+	with tf.name_scope('Reshape'):
+		embedded = Reshape((1,num_actions))(output)
 	with tf.name_scope('LSTM'):
 		lstm = LSTM(64)(embedded)
 	with tf.name_scope('Output'):
@@ -152,8 +152,8 @@ def create_deep_LSTM_network(window, input_shape, num_actions):
 		x = Dense(512, activation='relu')(x)
 	with tf.name_scope('Output'):
 		out = Dense(num_actions, activation='linear')(x)
-	with tf.name_scope('Embedding'):
-		embedded = Embedding(output_dim=64,input_dim=42)(out)
+	with tf.name_scope('Reshape'):
+		embedded = Reshape((1,num_actions))(out)
 	with tf.name_scope('LSTM'):
 		lstm = LSTM(64)(embedded)
 	with tf.name_scope('Output'):
