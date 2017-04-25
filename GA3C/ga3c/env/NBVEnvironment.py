@@ -13,6 +13,10 @@ class NBVEnvironment():
 
     def get_num_actions(self):
         return self.game.env.action_space.n
+    
+    def render(self):
+        self.game.render()
+
 
     def reset(self):
         self.previous_state = None

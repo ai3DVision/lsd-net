@@ -1,7 +1,7 @@
 from nbv.envs.nbv_env import NBVEnvV0
 from gym.envs.registration import register
 import gym
-
+import time
 max_steps = 12
 seed = 100
 
@@ -14,7 +14,7 @@ env = gym.make('Next-Best-View-test-v0')
 env.seed(seed)
 
 # Change the render delay time
-env.set_render_delay(0.5)
+env.set_render_delay(1)
 
 # Test moving the image clockwise
 obs = env.reset()
@@ -22,10 +22,11 @@ cw_idx = list(env.actions.values()).index('CW')
 cw_action = list(env.actions.keys())[cw_idx]
 for i in range(max_steps):
 	obs, reward, is_terminal, info = env.step(cw_action)
+	#print(obs)
 	env.render()
 
 # Change the render delay time faster
-env.set_render_delay(0.1)
+env.set_render_delay(1)
 
 # Test moving the image counter clockwise
 obs = env.reset()
