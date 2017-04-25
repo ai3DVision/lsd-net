@@ -34,7 +34,7 @@ class NBVEnvironment(Environment):
     @staticmethod
     def _preprocess(state):
         img = Image.fromarray(state)
-        img = img.resize((Config.IMAGE_WIDTH, Config.IMAGE_HEIGHT))
+        img = img.resize((self.resized_width, self.resized_height))
         state = np.array(img)
         state = state.astype('float32') / 255.
         return state
