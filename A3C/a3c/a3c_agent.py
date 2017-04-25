@@ -15,7 +15,7 @@ import sys
 if sys.version_info[0] == 2:
     from model.model import build_policy_and_value_networks
 else:
-    from a3c.model.model import build_policy_and_value_networks
+    from A3C.a3c.model.model import build_policy_and_value_networks
 from keras import backend as K
 import os
 
