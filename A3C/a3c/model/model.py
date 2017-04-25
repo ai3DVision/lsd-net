@@ -5,6 +5,8 @@ from keras.models import Model
 from keras.applications.resnet50 import ResNet50
 
 def build_policy_and_value_networks(model_name, num_actions, input_shape, window):
+    K.set_learning_phase(True)
+
     if 'a3c_networks' in model_name:
         return build_a3c_networks(num_actions, window, input_shape)
     elif 'cartpole' in model_name:
