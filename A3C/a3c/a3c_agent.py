@@ -168,8 +168,8 @@ class A3CAgent:
 
     def compile(self, loss_func):
         state, \
-        p_network, \
-        v_network, \
+        self.softmax_p, \
+        self.logits_v, \
         p_params, \
         v_params = build_policy_and_value_networks(model_name=self.model_name, \
                                                    num_actions=self.num_actions, \
@@ -178,18 +178,30 @@ class A3CAgent:
 
         optimizer = tf.train.AdamOptimizer(self.learning_rate)
 
-        target = tf.placeholder('float', [None])
-        action_mask = tf.placeholder('float', [None, self.num_actions])
+        self.y_r = tf.placeholder('float', [None])
+        self.action_index = tf.placeholder('float', [None, self.num_actions])
 
-        v_network_flat = tf.reshape(v_network, shape=[-1]);
-        p_network_masked = tf.reduce_sum(tf.multiply(p_network, action_mask), reduction_indices=1)
-        p_loss = loss_func(p_network_masked, target - v_network_flat, max_grad=self.max_grad)
-        v_loss = tf.reduce_mean(tf.square(target - v_network)) / 2
+        self.selected_action_prob = tf.reduce_sum(self.softmax_p * self.action_index, axis=1)
 
-        total_loss = p_loss + v_loss
+        self.var_beta = 0.01
+        self.log_epsilon = 1e-6
+        self.cost_p_1 = tf.log(tf.maximum(self.selected_action_prob, self.log_epsilon)) \
+                        * (self.y_r - tf.stop_gradient(self.logits_v))
+        self.cost_p_2 = -1 * self.var_beta * \
+                        tf.reduce_sum(tf.log(tf.maximum(self.softmax_p, self.log_epsilon)) *
+                                      self.softmax_p, axis=1)
+        
+        self.cost_p_1_agg = tf.reduce_sum(self.cost_p_1)
+        self.cost_p_2_agg = tf.reduce_sum(self.cost_p_2)
+        self.cost_p = -(self.cost_p_1_agg + self.cost_p_2_agg)
+        
+        self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v))
+
+        total_loss = self.cost_p + self.cost_v
+
         minimize = optimizer.minimize(total_loss)
         
-        self.model = state, action_mask, target, minimize, p_network, v_network
+        self.model = state, self.action_index, self.y_r, minimize, self.softmax_p, self.logits_v
 
     def setup_summaries(self):
         episode_reward = tf.Variable(0.)
