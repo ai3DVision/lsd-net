@@ -109,7 +109,7 @@ class ProcessAgent(Process):
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
-            self.env.render()
+            #self.env.render()
             if done or time_count == Config.TIME_MAX:
                 terminal_reward = 0 if done else value
 
