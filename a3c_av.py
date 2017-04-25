@@ -7,7 +7,7 @@ from A3C.a3c.utils import get_output_folder, mean_huber_loss
 import nbv.envs
 
 flags = tf.app.flags
-flags.DEFINE_string('output', 'nbv', 'Name of the output folder')
+flags.DEFINE_string('output', 'nbv_output', 'Name of the output folder')
 flags.DEFINE_string('env', 'Next-Best-View-v0', 'Name of the environment')
 flags.DEFINE_string('model', 'nbv', 'type of network')
 flags.DEFINE_boolean('testing', False, 'If true, run gym evaluation')
@@ -18,7 +18,7 @@ flags.DEFINE_integer('num_concurrent', 32, 'Number of concurrent threads during 
 flags.DEFINE_integer('agent_history_length', 3, 'History window length.')
 flags.DEFINE_integer('resized_width', 224, 'Scale screen to this width.')
 flags.DEFINE_integer('resized_height', 224, 'Scale screen to this height.')
-flags.DEFINE_float('gamma', 0.99, 'Reward discount rate.')
+flags.DEFINE_float('gamma', 0.5, 'Reward discount rate.')
 flags.DEFINE_float('learning_rate', 0.0001, 'Learning rate.')
 flags.DEFINE_integer('num_iterations', 25000000, 'Number of training timesteps.')
 flags.DEFINE_integer('async_update', 32, 'Size of batch to update network')
