@@ -16,22 +16,22 @@ from nbv.envs.env_constants import data_folder, data_dict_file_name, \
 class NBVEnvV0(Env):
 	metadata = {'render.modes': ['human']}
 
-	# Path to data and images
-	dir_path = os.path.dirname(os.path.realpath(__file__))
-	data_folder = os.path.join(dir_path, output_folder_name)
-
-	# Env state
-	category = None
-	group = None
-	image_idx = None
-	group_size = None
-	image = None
-	steps = 0
-
-	# Time delay during render
-	render_delay = 1
-
 	def __init__(self, max_steps):
+		# Path to data and images
+		self.dir_path = os.path.dirname(os.path.realpath(__file__))
+		self.data_folder = os.path.join(self.dir_path, output_folder_name)
+
+		# Env state
+		self.category = None
+		self.group = None
+		self.image_idx = None
+		self.group_size = None
+		self.image = None
+		self.steps = 0
+
+		# Time delay during render
+		render_delay = 1
+
 		# Get dictionary of data
 		self.data = self.read_data()
 
