@@ -1,4 +1,5 @@
 from keras.layers import Flatten, Dense, Input, Convolution2D
+from keras.layers import LSTM,Reshape
 from keras.models import Model
 from keras.applications.resnet50 import ResNet50
 from GA3C.ga3c.Config import Config
@@ -57,8 +58,11 @@ def create_nbv_models(num_actions, img_height, img_width, img_channels):
 	inputs = Input(shape=(img_height, img_width, img_channels))
 	resnet50 = ResNet50(include_top=False, weights='imagenet')(inputs)
 	flatten = Flatten()(resnet50)
-	action_probs = Dense(name="p", output_dim=num_actions, activation='softmax')(flatten)
-	state_value = Dense(name="v", output_dim=1, activation='linear')(flatten)
+	fc = Dense(256)(flatten)
+	reshape = Reshape((1,256))(fc)
+	lstm = LSTM(12)(reshape)
+	action_probs = Dense(name="p", output_dim=num_actions, activation='softmax')(lstm)
+	state_value = Dense(name="v", output_dim=1, activation='linear')(lstm)
 
 	p_model = Model(input=inputs, output=action_probs)
 	v_model = Model(input=inputs, output=state_value)
