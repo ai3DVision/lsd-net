@@ -47,6 +47,7 @@ class Network:
                 
 
     def _create_graph(self):
+        self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
         self.x = tf.placeholder(tf.float32, [None, self.img_height, self.img_width, self.img_channels], name='X')
         self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
@@ -60,10 +61,19 @@ class Network:
         self.logits_v = v_model(self.x)
 
         if Config.TRAIN_MODELS:
-            logits_v_flat = tf.reshape(self.logits_v, shape=[-1]);
-            logits_p_masked = tf.reduce_sum(tf.multiply(self.softmax_p, self.action_index), reduction_indices=1)
-            self.cost_p = mean_huber_loss(logits_p_masked, self.y_r - logits_v_flat, max_grad=Config.GRAD_CLIP_NORM)
-            self.cost_v = tf.reduce_mean(tf.square(self.y_r - self.logits_v)) / 2
+            self.selected_action_prob = tf.reduce_sum(self.softmax_p * self.action_index, axis=1)
+
+            self.cost_p_1 = tf.log(tf.maximum(self.selected_action_prob, self.log_epsilon)) \
+                            * (self.y_r - tf.stop_gradient(self.logits_v))
+            self.cost_p_2 = -1 * self.var_beta * \
+                            tf.reduce_sum(tf.log(tf.maximum(self.softmax_p, self.log_epsilon)) *
+                                          self.softmax_p, axis=1)
+            
+            self.cost_p_1_agg = tf.reduce_sum(self.cost_p_1)
+            self.cost_p_2_agg = tf.reduce_sum(self.cost_p_2)
+            self.cost_p = -(self.cost_p_1_agg + self.cost_p_2_agg)
+            
+            self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v))
 
             total_loss = self.cost_p + self.cost_v
 
@@ -87,7 +97,7 @@ class Network:
         self.log_writer = tf.summary.FileWriter(self.log_path, self.sess.graph)
 
     def __get_base_feed_dict(self):
-        return {self.var_learning_rate: self.learning_rate}
+        return {self.var_beta: self.beta, self.var_learning_rate: self.learning_rate}
     
     def predict_p_and_v(self, x):
         return self.sess.run([self.softmax_p, self.logits_v], feed_dict={self.x: x})
