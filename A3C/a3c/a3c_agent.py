@@ -87,6 +87,8 @@ class A3CAgent:
         update_ep_pol, \
         summary_op = summary_ops
 
+        discount = 1
+        discounted_ep_reward = 0
         ep_reward = 0
         ep_avg_v = 0
         ep_max_p = 0
@@ -114,6 +116,9 @@ class A3CAgent:
 
                 state, reward, terminal, info = env.step(action)
                 ep_reward += reward
+
+                discounted_ep_reward += reward * discount
+                discount *= self.gamma
 
                 reward = np.clip(reward, -1, 1)
                 past_rewards.append(reward)
@@ -150,9 +155,11 @@ class A3CAgent:
                 if ep_iters > 0:
                     session.run(update_ep_pol, feed_dict={pol_summary_placeholder: ep_max_p/ep_iters})
                 session.run(update_ep_reward, feed_dict={r_summary_placeholder: ep_reward})
-                print('THREAD:', num, '/ TIME', self.iteration, '/ REWARD', ep_reward)
+                print('THREAD:', num, '/ TIME', self.iteration, '/ REWARD', ep_reward, '/ DISCOUNTED REWARD', discounted_ep_reward)
                 state = env.reset()
                 terminal = False
+                discount = 1
+                discounted_ep_reward = 0
                 ep_reward = 0
                 ep_iters = 0
                 ep_avg_v = 0
