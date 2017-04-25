@@ -23,18 +23,18 @@ class NBVEnvironment(Environment):
 
     def reset(self):
         state = self.env.reset()
-        state = NBVEnvironment._preprocess(state)
+        state = NBVEnvironment._preprocess(state, self.resized_width, self.resized_height)
         return state
 
     def step(self, action):
         state, reward, done, info = self.env.step(action)
-        state = NBVEnvironment._preprocess(state)
+        state = NBVEnvironment._preprocess(state, self.resized_width, self.resized_height)
         return state, reward, done, info
 
     @staticmethod
-    def _preprocess(state):
+    def _preprocess(state, resized_width, resized_height):
         img = Image.fromarray(state)
-        img = img.resize((self.resized_width, self.resized_height))
+        img = img.resize((resized_width, resized_height))
         state = np.array(img)
         state = state.astype('float32') / 255.
         return state
