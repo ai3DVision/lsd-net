@@ -1,13 +1,16 @@
 import tensorflow as tf
 from keras import backend as K
-from keras.layers import Convolution2D, Flatten, Dense, Input
+from keras.layers import Convolution2D, Flatten, Dense, Input, LSTM, Reshape
 from keras.models import Model
+from keras.applications.resnet50 import ResNet50
 
 def build_policy_and_value_networks(model_name, num_actions, input_shape, window):
     if 'a3c_networks' in model_name:
         return build_a3c_networks(num_actions, window, input_shape)
     elif 'cartpole' in model_name:
         return build_cartpole_networks(num_actions, input_shape)
+    elif 'nbv' in model_name:
+        return build_nbv_networks(num_actions, input_shape, window)
     else:
         raise('Model does not exist.')
 
@@ -60,3 +63,34 @@ def build_cartpole_networks(num_actions, input_shape):
         v_out = value_network(state)
 
     return state, p_out, v_out, p_params, v_params
+
+def build_nbv_networks(num_actions, input_shape, window):
+    assert(window == 3)
+    assert(input_shape[0] >= 197 and input_shape[1] >= 197)
+
+    with tf.device("/cpu:0"):
+        state = tf.placeholder("float", [None] + list(input_shape) + [window])
+
+        inputs = Input(shape=input_shape+(window,))
+        resnet50 = ResNet50(include_top=False, weights='imagenet')(inputs)
+        flatten = Flatten()(resnet50)
+        fc = Dense(256)(flatten)
+        reshape = Reshape((1,256))(fc)
+        lstm = LSTM(64)(reshape)
+        action_probs = Dense(name="p", output_dim=num_actions, activation='softmax')(lstm)
+        state_value = Dense(name="v", output_dim=1, activation='linear')(lstm)
+
+        policy_network = Model(input=inputs, output=action_probs)
+        value_network = Model(input=inputs, output=state_value)
+
+        print(policy_network.summary())
+        print(value_network.summary())
+        
+        p_params = policy_network.trainable_weights
+        v_params = value_network.trainable_weights
+
+        p_out = policy_network(state)
+        v_out = value_network(state)
+
+    return state, p_out, v_out, p_params, v_params
+
