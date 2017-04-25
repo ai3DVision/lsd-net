@@ -60,7 +60,7 @@ def create_nbv_models(num_actions, img_height, img_width, img_channels):
 	flatten = Flatten()(resnet50)
 	fc = Dense(256)(flatten)
 	reshape = Reshape((1,256))(fc)
-	lstm = LSTM(12)(reshape)
+	lstm = LSTM(64)(reshape)
 	action_probs = Dense(name="p", output_dim=num_actions, activation='softmax')(lstm)
 	state_value = Dense(name="v", output_dim=1, activation='linear')(lstm)
 
