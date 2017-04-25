@@ -37,7 +37,7 @@ class Network:
                     config=tf.ConfigProto(
                         allow_soft_placement=True,
                         log_device_placement=False,
-                        gpu_options=tf.GPUOptions(allow_growth=True)))
+                        gpu_options=tf.GPUOptions(per_process_gpu_memory_fraction=0.3)))
                 self.sess.run(tf.global_variables_initializer())
 
                 if Config.TENSORBOARD: self._create_tensor_board()
