@@ -8,11 +8,11 @@ import gym
 
 from GA3C.ga3c.Config import Config
 from GA3C.ga3c.Server import Server
-from GA3C.ga3c.env.Environment import Environment
-from GA3C.ga3c.network.Network import Network
 
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
+
+import nbv.envs
 
 # Parse arguments
 for i in range(1, len(sys.argv)):
@@ -57,7 +57,7 @@ if Config.TRAIN_MODELS:
 else:
 	env = gym.make(Config.GAME)
 
-	network = Network(Config.DEVICE, Config.NETWORK_NAME, env.action_space.n)
+	network = NetworkVP()
 	network.load()
 
 	env.test_ga3c(network, num_episode=1)

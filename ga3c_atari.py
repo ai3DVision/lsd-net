@@ -32,8 +32,8 @@ if sys.version_info < (3,0):
 
 import gym
 
-from ga3c.Config import Config
-from ga3c.Server import Server
+from GA3C.ga3c.Config import Config
+from GA3C.ga3c.Server import Server
 
 # Parse arguments
 for i in range(1, len(sys.argv)):
@@ -42,15 +42,16 @@ for i in range(1, len(sys.argv)):
     x, y = sys.argv[i].split('=')
     setattr(Config, x, type(getattr(Config, x))(y))
 
-Config.NETWORK_NAME = 'atari'
-Config.GAME = 'Breakout-v0'
-Config.PLAY_MODE = True
-Config.AGENTS = 4
-Config.PREDICTORS = 1
-Config.TRAINERS = 1
-Config.DYNAMIC_SETTINGS = False
-Config.GREEDY_POLICY = False
-Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY = False
+# Adjust configs for Play mode
+if Config.PLAY_MODE:
+    Config.AGENTS = 1
+    Config.PREDICTORS = 1
+    Config.TRAINERS = 1
+    Config.DYNAMIC_SETTINGS = False
+
+    Config.LOAD_CHECKPOINT = True
+    Config.TRAIN_MODELS = False
+    Config.SAVE_MODELS = False
 
 gym.undo_logger_setup()
 
