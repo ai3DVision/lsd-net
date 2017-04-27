@@ -29,10 +29,10 @@ import re
 import numpy as np
 import tensorflow as tf
 
-from GA3C.ga3c.Config import Config
-from GA3C.ga3c.network.Network import Network
+from Config import Config
 
-class NetworkVP(Network):
+
+class NetworkVP:
     def __init__(self, device, model_name, num_actions):
         self.device = device
         self.model_name = model_name

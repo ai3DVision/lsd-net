@@ -35,9 +35,6 @@ class GameManager:
         self.env = gym.make(game_name)
         self.reset()
 
-    def render(self):
-        self.env.render()
-        
     def reset(self):
         observation = self.env.reset()
         return observation

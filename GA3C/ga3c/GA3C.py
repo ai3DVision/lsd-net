@@ -24,39 +24,36 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from threading import Thread
+# check python version; warn if not Python3
+import sys
+import warnings
+if sys.version_info < (3,0):
+    warnings.warn("Optimized for Python3. Performance may suffer under Python2.", Warning)
 
-import numpy as np
+import gym
 
 from Config import Config
+from Server import Server
 
+# Parse arguments
+for i in range(1, len(sys.argv)):
+    # Config arguments should be in format of Config=Value
+    # For setting booleans to False use Config=
+    x, y = sys.argv[i].split('=')
+    setattr(Config, x, type(getattr(Config, x))(y))
 
-class ThreadPredictor(Thread):
-    def __init__(self, server, id):
-        super(ThreadPredictor, self).__init__()
-        self.setDaemon(True)
+# Adjust configs for Play mode
+if Config.PLAY_MODE:
+    Config.AGENTS = 1
+    Config.PREDICTORS = 1
+    Config.TRAINERS = 1
+    Config.DYNAMIC_SETTINGS = False
 
-        self.id = id
-        self.server = server
-        self.exit_flag = False
+    Config.LOAD_CHECKPOINT = True
+    Config.TRAIN_MODELS = False
+    Config.SAVE_MODELS = False
 
-    def run(self):
-        ids = np.zeros(Config.PREDICTION_BATCH_SIZE, dtype=np.uint16)
-        states = np.zeros(
-            (Config.PREDICTION_BATCH_SIZE, Config.IMAGE_HEIGHT, Config.IMAGE_WIDTH, Config.STACKED_FRAMES),
-            dtype=np.float32)
+gym.undo_logger_setup()
 
-        while not self.exit_flag:
-            ids[0], states[0] = self.server.prediction_q.get()
-
-            size = 1
-            while size < Config.PREDICTION_BATCH_SIZE and not self.server.prediction_q.empty():
-                ids[size], states[size] = self.server.prediction_q.get()
-                size += 1
-
-            batch = states[:size]
-            p, v = self.server.model.predict_p_and_v(batch)
-
-            for i in range(size):
-                if ids[i] < len(self.server.agents):
-                    self.server.agents[ids[i]].wait_q.put((p[i], v[i]))
+# Start main program
+Server().main()

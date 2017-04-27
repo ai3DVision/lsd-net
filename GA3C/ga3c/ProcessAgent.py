@@ -30,12 +30,13 @@ from multiprocessing import Process, Queue, Value
 import numpy as np
 import time
 
-from GA3C.ga3c.Config import Config
-from GA3C.ga3c.Experience import Experience
-from GA3C.ga3c.Policy import LinearDecayGreedyEpsilonPolicy
+from Config import Config
+from Environment import Environment
+from Experience import Experience
+
 
 class ProcessAgent(Process):
-    def __init__(self, environment, id, prediction_q, training_q, episode_log_q):
+    def __init__(self, id, prediction_q, training_q, episode_log_q):
         super(ProcessAgent, self).__init__()
 
         self.id = id
@@ -43,7 +44,7 @@ class ProcessAgent(Process):
         self.training_q = training_q
         self.episode_log_q = episode_log_q
 
-        self.env = environment()
+        self.env = Environment()
         self.num_actions = self.env.get_num_actions()
         self.actions = np.arange(self.num_actions)
 
@@ -51,12 +52,6 @@ class ProcessAgent(Process):
         # one frame at a time
         self.wait_q = Queue(maxsize=1)
         self.exit_flag = Value('i', 0)
-
-        if Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY:
-            self.policy = LinearDecayGreedyEpsilonPolicy(self.num_actions,
-                                                         Config.EPSILON_START, 
-                                                         Config.EPSILON_END, 
-                                                         Config.DECAY_NUM_STEPS)
 
     @staticmethod
     def _accumulate_rewards(experiences, discount_factor, terminal_reward):
@@ -81,9 +76,7 @@ class ProcessAgent(Process):
         return p, v
 
     def select_action(self, prediction):
-        if Config.TRAIN_MODELS and Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY:
-            action = self.policy.select_action(prediction)
-        elif Config.PLAY_MODE and Config.GREEDY_POLICY:
+        if Config.PLAY_MODE:
             action = np.argmax(prediction)
         else:
             action = np.random.choice(self.actions, p=prediction)
@@ -109,16 +102,13 @@ class ProcessAgent(Process):
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
-            #self.env.render()
+
             if done or time_count == Config.TIME_MAX:
                 terminal_reward = 0 if done else value
 
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
-                if len(updated_exps) == 0:
-                    yield None, None, None, 0
-                else:
-                    x_, r_, a_ = self.convert_data(updated_exps)
-                    yield x_, r_, a_, reward_sum
+                x_, r_, a_ = self.convert_data(updated_exps)
+                yield x_, r_, a_, reward_sum
 
                 # reset the tmax count
                 time_count = 0
@@ -138,8 +128,6 @@ class ProcessAgent(Process):
             total_length = 0
             for x_, r_, a_, reward_sum in self.run_episode():
                 total_reward += reward_sum
-                if x_ is None:
-                    break
                 total_length += len(r_) + 1  # +1 for last frame that we drop
                 self.training_q.put((x_, r_, a_))
             self.episode_log_q.put((datetime.now(), total_reward, total_length))
