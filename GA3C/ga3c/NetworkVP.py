@@ -244,6 +244,8 @@ class NetworkVP:
         self.log_writer.add_summary(summary, step)
 
     def _checkpoint_filename(self, episode):
+        if not os.path.exists('checkpoints'):
+            os.makedirs('checkpoints')
         return 'checkpoints/%s_%08d' % (self.model_name, episode)
     
     def _get_episode_from_filename(self, filename):
