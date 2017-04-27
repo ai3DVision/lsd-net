@@ -36,7 +36,7 @@ from multiprocessing import Process, Queue, Value
 import numpy as np
 import time
 
-from ga3c.Config import Config
+from GA3C.ga3c.Config import Config
 
 
 class ProcessStats(Process):
