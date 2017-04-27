@@ -30,9 +30,9 @@ from multiprocessing import Process, Queue, Value
 import numpy as np
 import time
 
-from Config import Config
-from Environment import Environment
-from Experience import Experience
+from ga3c.Config import Config
+from ga3c.Environment import Environment
+from ga3c.Experience import Experience
 
 
 class ProcessAgent(Process):

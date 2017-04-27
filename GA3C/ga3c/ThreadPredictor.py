@@ -28,7 +28,7 @@ from threading import Thread
 
 import numpy as np
 
-from Config import Config
+from ga3c.Config import Config
 
 
 class ThreadPredictor(Thread):

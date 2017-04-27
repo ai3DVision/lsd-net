@@ -29,7 +29,7 @@ import re
 import numpy as np
 import tensorflow as tf
 
-from Config import Config
+from ga3c.Config import Config
 
 
 class NetworkVP:

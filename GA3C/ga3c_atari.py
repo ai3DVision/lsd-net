@@ -34,7 +34,6 @@ import gym
 
 from ga3c.Config import Config
 from ga3c.Server import Server
-from ga3c.env.AtariEnvironment import AtariEnvironment
 
 # Parse arguments
 for i in range(1, len(sys.argv)):
