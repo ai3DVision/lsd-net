@@ -39,7 +39,7 @@ from GA3C.ga3c.GameManager import GameManager
 
 class Environment:
     def __init__(self):
-        self.game = GameManager(Config.ATARI_GAME, display=Config.PLAY_MODE)
+        self.game = GameManager(Config.GAME, display=Config.PLAY_MODE)
         self.nb_frames = Config.STACKED_FRAMES
         self.frame_q = Queue(maxsize=self.nb_frames)
         self.previous_state = None
