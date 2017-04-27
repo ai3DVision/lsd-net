@@ -27,7 +27,7 @@
 from threading import Thread
 import numpy as np
 
-from Config import Config
+from GA3C.ga3c.Config import Config
 
 
 class ThreadTrainer(Thread):

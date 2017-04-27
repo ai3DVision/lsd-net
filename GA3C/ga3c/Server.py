@@ -28,14 +28,14 @@ from multiprocessing import Queue
 
 import time
 
-from Config import Config
-from Environment import Environment
-from NetworkVP import NetworkVP
-from ProcessAgent import ProcessAgent
-from ProcessStats import ProcessStats
-from ThreadDynamicAdjustment import ThreadDynamicAdjustment
-from ThreadPredictor import ThreadPredictor
-from ThreadTrainer import ThreadTrainer
+from GA3C.ga3c.Config import Config
+from GA3C.ga3c.Environment import Environment
+from GA3C.ga3c.NetworkVP import NetworkVP
+from GA3C.ga3c.ProcessAgent import ProcessAgent
+from GA3C.ga3c.ProcessStats import ProcessStats
+from GA3C.ga3c.ThreadDynamicAdjustment import ThreadDynamicAdjustment
+from GA3C.ga3c.ThreadPredictor import ThreadPredictor
+from GA3C.ga3c.ThreadTrainer import ThreadTrainer
 
 
 class Server:

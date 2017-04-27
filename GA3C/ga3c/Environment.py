@@ -33,8 +33,8 @@ else:
 import numpy as np
 import scipy.misc as misc
 
-from Config import Config
-from GameManager import GameManager
+from GA3C.ga3c.Config import Config
+from GA3C.ga3c.GameManager import GameManager
 
 
 class Environment:
