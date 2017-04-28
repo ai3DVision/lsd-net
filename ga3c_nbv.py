@@ -44,6 +44,8 @@ for i in range(1, len(sys.argv)):
     x, y = sys.argv[i].split('=')
     setattr(Config, x, type(getattr(Config, x))(y))
 
+Config.NETWORK_NAME = 'resnet_v1_50'
+
 # Adjust configs for Play mode
 if Config.PLAY_MODE:
     Config.AGENTS = 1
