@@ -85,6 +85,7 @@ class NetworkVP:
         conv2 = Convolution2D(32, 4, 4, subsample=(2, 2), activation='relu')(conv1)
         flatten = Flatten()(conv2)
         fc = Dense(256, activation='relu')(flatten)
+        
         state_value = Dense(name='v', output_dim=1, activation='linear')(fc)
         action_probs = Dense(name='p', output_dim=self.num_actions, activation='softmax')(fc)
 
