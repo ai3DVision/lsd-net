@@ -82,7 +82,7 @@ class NetworkVP:
         # self.n2 = self.conv2d_layer(self.n1, 4, 32, 'conv12', strides=[1, 2, 2, 1])
         # _input = self.n2
 
-        network_fn = get_network_fn(name='resnet_v1_50', num_classes=None, is_training=True)
+        network_fn = get_network_fn(name=Config.NETWORK_NAME, num_classes=None, is_training=Config.PLAY_MODE)
         _, end_points = network_fn(self.x)
         _input = list(end_points.values())[-1]
 
