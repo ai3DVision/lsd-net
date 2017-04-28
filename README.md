@@ -37,7 +37,7 @@ python ga3c_nbv.py
 
 ## Test the GA3C on NBV
 ```
-python ga3c_nbv.py PLAY_MODE=1
+python ga3c_nbv.py PLAY_MODE=1 LOAD_EPISODE={{EPISODE NUMBER}}
 ```
 
 ## References
