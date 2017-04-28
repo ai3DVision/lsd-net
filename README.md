@@ -37,10 +37,13 @@ python ga3c_nbv.py
 
 ## Test the GA3C on NBV
 ```
-python ga3c_nbv.py TRAIN_MODELS='' LOAD_EPISODE={CHECKPOINT EPISODE}
+python ga3c_nbv.py TRAIN_MODELS=1
 ```
 
 ## References
+* [Wu, Zhirong and Song, Shuran and Khosla, Aditya and Tang, Xiaoou  and Xiao, Jianxiong, CVPR 2015, 3D ShapeNets: A Deep Representation for Volumetric Shapes](https://arxiv.org/abs/1406.5670)
+* [Volodymyr Mnih and Koray Kavukcuoglu and David Silver and Alex Graves and Ioannis Antonoglou and Daan Wierstra and Martin A. Riedmiller, CoRR 2013, Playing Atari with Deep Reinforcement Learning](https://arxiv.org/abs/1312.5602)
 * [Babaeizadeh, Mohammad and Frosio, Iuri and Tyree, Stephen and Clemons, Jason and Kautz, Jan. ICLR 2017, Reinforcement Learning thorugh Asynchronous Advantage Actor-Critic on a GPU](https://arxiv.org/abs/1611.06256)
 * [NVlabs/GA3C](https://github.com/NVlabs/GA3C)
 * [Tensorflow Models](https://github.com/tensorflow/models)
+* [Dataset](http://maxwell.cs.umass.edu/mvcnn-data/)
