@@ -39,3 +39,8 @@ python ga3c_nbv.py
 ```
 python ga3c_nbv.py TRAIN_MODELS='' LOAD_EPISODE={CHECKPOINT EPISODE}
 ```
+
+## References
+* [Babaeizadeh, Mohammad and Frosio, Iuri and Tyree, Stephen and Clemons, Jason and Kautz, Jan. ICLR 2017, Reinforcement Learning thorugh Asynchronous Advantage Actor-Critic on a GPU](https://arxiv.org/abs/1611.06256)
+* [NVlabs/GA3C](https://github.com/NVlabs/GA3C)
+* [Tensorflow Models](https://github.com/tensorflow/models)
