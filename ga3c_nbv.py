@@ -61,6 +61,8 @@ if Config.PLAY_MODE:
     network = Server().model
     env.test_ga3c(network, 1)
 else:
+    Config.LOAD_PRETRAINED = True
+
     gym.undo_logger_setup()
 
     # Start main program

@@ -41,6 +41,8 @@ class Config:
     LOAD_CHECKPOINT = False
     # If 0, the latest checkpoint is loaded
     LOAD_EPISODE = 0 
+    # Load pretrained model
+    LOAD_PRETRAINED = False
 
     #########################################################################
     # Number of agents, predictors, trainers and other system settings
