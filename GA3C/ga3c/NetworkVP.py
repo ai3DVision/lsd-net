@@ -31,9 +31,6 @@ import tensorflow as tf
 
 from GA3C.ga3c.Config import Config
 
-from keras.layers import Flatten, Dense, Input, Convolution2D
-from keras.models import Model
-import keras.backend as K
 
 class NetworkVP:
     def __init__(self, device, model_name, num_actions):
@@ -77,28 +74,23 @@ class NetworkVP:
         self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
 
         self.global_step = tf.Variable(0, trainable=False, name='step')
-        self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
         # As implemented in A3C paper
-        inputs = Input(shape=(self.img_height, self.img_width, self.img_channels))
-        conv1 = Convolution2D(16, 8, 8, subsample=(4, 4), activation='relu')(inputs)
-        conv2 = Convolution2D(32, 4, 4, subsample=(2, 2), activation='relu')(conv1)
-        flatten = Flatten()(conv2)
-        fc = Dense(256, activation='relu')(flatten)
-        state_value = Dense(name='v', output_dim=1, activation='linear')(fc)
-        action_probs = Dense(name='p', output_dim=self.num_actions, activation='softmax')(fc)
+        self.n1 = self.conv2d_layer(self.x, 8, 16, 'conv11', strides=[1, 4, 4, 1])
+        self.n2 = self.conv2d_layer(self.n1, 4, 32, 'conv12', strides=[1, 2, 2, 1])
+        self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
+        _input = self.n2
 
-        v_model = Model(input=inputs, output=state_value)
-        p_model = Model(input=inputs, output=action_probs)
+        flatten_input_shape = _input.get_shape()
+        nb_elements = flatten_input_shape[1] * flatten_input_shape[2] * flatten_input_shape[3]
 
-        print(v_model.summary())
-        print(p_model.summary())
+        self.flat = tf.reshape(_input, shape=[-1, nb_elements._value])
+        self.d1 = self.dense_layer(self.flat, 256, 'dense1')
 
-        self.logits_v = v_model(self.x)
-        self.logits_p = p_model(self.x)
-
+        self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
         self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)
 
+        self.logits_p = self.dense_layer(self.d1, self.num_actions, 'logits_p', func=None)
         if Config.USE_LOG_SOFTMAX:
             self.softmax_p = tf.nn.softmax(self.logits_p)
             self.log_softmax_p = tf.nn.log_softmax(self.logits_p)
