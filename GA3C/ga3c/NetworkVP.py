@@ -174,11 +174,11 @@ class NetworkVP:
         for var in tf.trainable_variables():
             summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
-        summaries.append(tf.summary.histogram("activation_n1", self.n1))
-        summaries.append(tf.summary.histogram("activation_n2", self.n2))
-        summaries.append(tf.summary.histogram("activation_d2", self.d1))
-        summaries.append(tf.summary.histogram("activation_v", self.logits_v))
-        summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
+        #summaries.append(tf.summary.histogram("activation_n1", self.n1))
+        #summaries.append(tf.summary.histogram("activation_n2", self.n2))
+        #summaries.append(tf.summary.histogram("activation_d2", self.d1))
+        #summaries.append(tf.summary.histogram("activation_v", self.logits_v))
+        #summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
 
         self.summary_op = tf.summary.merge(summaries)
         self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
