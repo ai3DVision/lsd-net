@@ -31,6 +31,7 @@ import tensorflow as tf
 
 from GA3C.ga3c.Config import Config
 
+from slim.nets.nets_factory import get_network_fn
 
 class NetworkVP:
     def __init__(self, device, model_name, num_actions):
@@ -74,12 +75,16 @@ class NetworkVP:
         self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
 
         self.global_step = tf.Variable(0, trainable=False, name='step')
-
-        # As implemented in A3C paper
-        self.n1 = self.conv2d_layer(self.x, 8, 16, 'conv11', strides=[1, 4, 4, 1])
-        self.n2 = self.conv2d_layer(self.n1, 4, 32, 'conv12', strides=[1, 2, 2, 1])
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
-        _input = self.n2
+        
+        # As implemented in A3C paper
+        # self.n1 = self.conv2d_layer(self.x, 8, 16, 'conv11', strides=[1, 4, 4, 1])
+        # self.n2 = self.conv2d_layer(self.n1, 4, 32, 'conv12', strides=[1, 2, 2, 1])
+        # _input = self.n2
+
+        network_fn = get_network_fn(name='resnet_v1_50', num_classes=None, is_training=True)
+        _, end_points = network_fn(self.x)
+        _input = list(end_points.values())[-1]
 
         flatten_input_shape = _input.get_shape()
         nb_elements = flatten_input_shape[1] * flatten_input_shape[2] * flatten_input_shape[3]
