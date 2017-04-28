@@ -13,6 +13,17 @@ import sys
 from nbv.envs.env_constants import data_folder, data_dict_file_name, \
 								   output_folder_name
 
+import sys
+if sys.version_info >= (3,0):
+    from queue import Queue
+else:
+    from Queue import Queue
+
+import numpy as np
+import scipy.misc as misc
+
+from GA3C.ga3c.Config import Config
+
 class NBVEnvV0(Env):
 	metadata = {'render.modes': ['human']}
 
@@ -182,6 +193,9 @@ class NBVEnvV0(Env):
 		total_groups = 0
 		accuracies = []
 
+		nb_frames = Config.STACKED_FRAMES
+		frame_q = Queue(maxsize=nb_frames)
+
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
 			for category in self.data[data_type]:
@@ -194,10 +208,20 @@ class NBVEnvV0(Env):
 					for j in range(self.max_steps):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
-						state = np.array(Image.open(image_path))
+						image = np.array(Image.open(image_path))
 
-						state = np.array([state]) / 255.
-						p, v = network.predict_p_and_v(state)
+						image = np.dot(image[..., :3], [0.299, 0.587, 0.114])
+						image = misc.imresize(image, [Config.IMAGE_HEIGHT, Config.IMAGE_WIDTH], 'bilinear')
+						image = image.astype(np.float32) / 128.0 - 1.0
+						frame_q.put(image)
+						
+						while not frame_q.full():
+							frame_q.put(image)
+
+						x_ = np.array(frame_q.queue)
+						x_ = np.transpose(x_, [1, 2, 0])
+
+						p, v = network.predict_p_and_v(np.array([x_]))
 						action = np.argmax(p[0])
 						
 						if j == self.max_steps-1:
@@ -214,6 +238,8 @@ class NBVEnvV0(Env):
 							break
 						else:
 							break
+
+					frame_q.queue.clear()
 
 			accuracy = num_correct / float(total_groups)
 			print('Accuracy: %f' % accuracy)

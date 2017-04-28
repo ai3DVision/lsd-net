@@ -55,7 +55,11 @@ if Config.PLAY_MODE:
     Config.TRAIN_MODELS = False
     Config.SAVE_MODELS = False
 
-gym.undo_logger_setup()
+    env = gym.make(Config.ATARI_GAME)
+    network = Server().model
+    env.test_ga3c(network, 1)
+else:
+    gym.undo_logger_setup()
 
-# Start main program
-Server().main()
+    # Start main program
+    Server().main()
