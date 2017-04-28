@@ -1,3 +1,29 @@
+# Copyright (c) 2016, NVIDIA CORPORATION. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#  * Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#  * Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#  * Neither the name of NVIDIA CORPORATION nor the names of its
+#    contributors may be used to endorse or promote products derived
+#    from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
+# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+# PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+# OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 # check python version; warn if not Python3
 import sys
 import warnings
@@ -8,11 +34,8 @@ import gym
 
 from GA3C.ga3c.Config import Config
 from GA3C.ga3c.Server import Server
-from GA3C.ga3c.env.Environment import Environment
-from GA3C.ga3c.network.Network import Network
 
-import tensorflow as tf
-from keras.backend.tensorflow_backend import set_session
+import nbv.envs.nbv_env
 
 # Parse arguments
 for i in range(1, len(sys.argv)):
@@ -21,43 +44,18 @@ for i in range(1, len(sys.argv)):
     x, y = sys.argv[i].split('=')
     setattr(Config, x, type(getattr(Config, x))(y))
 
-Config.NETWORK_NAME = 'nbv'
-Config.GAME = 'Next-Best-View-v0'
+# Adjust configs for Play mode
+if Config.PLAY_MODE:
+    Config.AGENTS = 1
+    Config.PREDICTORS = 1
+    Config.TRAINERS = 1
+    Config.DYNAMIC_SETTINGS = False
 
-Config.STACKED_FRAMES = 3
-Config.IMAGE_WIDTH = 224
-Config.IMAGE_HEIGHT = 224
+    Config.LOAD_CHECKPOINT = True
+    Config.TRAIN_MODELS = False
+    Config.SAVE_MODELS = False
 
-if Config.TRAIN_MODELS:
-	Config.PLAY_MODE = False
-	Config.AGENTS = 8
-	# Config.PREDICTORS = 1
-	# Config.TRAINERS = 1
-	# Config.DYNAMIC_SETTINGS = False
+gym.undo_logger_setup()
 
-	Config.EPISODES = 200000
-
-	Config.TENSORBOARD = True
-	Config.TENSORBOARD_UPDATE_FREQUENCY = 100
-	Config.SAVE_FREQUENCY = 2500
-
-	Config.GREEDY_POLICY = False
-	Config.LINEAR_DECAY_GREEDY_EPSILON_POLICY = False
-	Config.EPSILON_START = 1
-	Config.EPSILON_END = 0.1
-	Config.DECAY_NUM_STEPS = 400000
-
-	Config.LEARNING_RATE_START = 0.00001
-	Config.LEARNING_RATE_END = 0.00001
-
-	gym.undo_logger_setup()
-
-	# Start main program
-	Server().main()
-else:
-	env = gym.make(Config.GAME)
-
-	network = Network(Config.DEVICE, Config.NETWORK_NAME, env.action_space.n)
-	network.load()
-
-	env.test_ga3c(network, num_episode=1)
+# Start main program
+Server().main()

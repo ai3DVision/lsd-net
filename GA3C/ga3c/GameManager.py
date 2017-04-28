@@ -25,7 +25,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import gym
-
+from nbv.envs.nbv_env import NBVEnvV0
 
 class GameManager:
     def __init__(self, game_name, display):
@@ -35,9 +35,6 @@ class GameManager:
         self.env = gym.make(game_name)
         self.reset()
 
-    def render(self):
-        self.env.render()
-        
     def reset(self):
         observation = self.env.reset()
         return observation

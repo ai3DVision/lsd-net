@@ -30,7 +30,8 @@ class Config:
     # Game configuration
 
     # Name of the game, with version (e.g. PongDeterministic-v0)
-    GAME = 'PongDeterministic-v0'
+    #ATARI_GAME = 'PongDeterministic-v0'
+    ATARI_GAME = 'Next-Best-View-v0'
 
     # Enable to see the trained agent in action
     PLAY_MODE = False
@@ -46,6 +47,7 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
+    #AGENTS = 1
     AGENTS = 32 
     # Number of Predictors
     PREDICTORS = 2
@@ -67,7 +69,7 @@ class Config:
     DISCOUNT = 0.99
     
     # Tmax
-    TIME_MAX = 5
+    TIME_MAX = 10
     
     # Reward Clipping
     REWARD_MIN = -1
@@ -79,8 +81,8 @@ class Config:
 
     # Input of the DNN
     STACKED_FRAMES = 4
-    IMAGE_WIDTH = 84
-    IMAGE_HEIGHT = 84
+    IMAGE_WIDTH = 224
+    IMAGE_HEIGHT = 224
 
     # Total number of episodes and annealing frequency
     EPISODES = 400000
@@ -104,7 +106,7 @@ class Config:
     
     # Gradient clipping
     USE_GRAD_CLIP = False
-    GRAD_CLIP_NORM = 1.0
+    GRAD_CLIP_NORM = 40.0 
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
@@ -114,7 +116,7 @@ class Config:
     # Log and save
 
     # Enable TensorBoard
-    TENSORBOARD = False
+    TENSORBOARD = True
     # Update TensorBoard every X training steps
     TENSORBOARD_UPDATE_FREQUENCY = 1000
 
@@ -127,16 +129,11 @@ class Config:
     PRINT_STATS_FREQUENCY = 1
     # The window to average stats
     STAT_ROLLING_MEAN_WINDOW = 1000
-    
+
+    # Results filename
+    RESULTS_FILENAME = 'results.txt'
     # Network checkpoint name
     NETWORK_NAME = 'network'
-
-    #########################################################################
-    # Decay greedy epsilon policy
-    EPSILON_START = 1
-    EPSILON_END = 0.1
-    DECAY_NUM_STEPS = 200000
-    LINEAR_DECAY_GREEDY_EPSILON_POLICY = True
 
     #########################################################################
     # More experimental parameters here
@@ -145,5 +142,3 @@ class Config:
     MIN_POLICY = 0.0
     # Use log_softmax() instead of log(softmax())
     USE_LOG_SOFTMAX = False
-    # Greedy policy
-    GREEDY_POLICY = True

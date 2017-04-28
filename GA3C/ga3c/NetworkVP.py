@@ -30,9 +30,9 @@ import numpy as np
 import tensorflow as tf
 
 from GA3C.ga3c.Config import Config
-from GA3C.ga3c.network.Network import Network
 
-class NetworkVP(Network):
+
+class NetworkVP:
     def __init__(self, device, model_name, num_actions):
         self.device = device
         self.model_name = model_name
@@ -244,6 +244,8 @@ class NetworkVP(Network):
         self.log_writer.add_summary(summary, step)
 
     def _checkpoint_filename(self, episode):
+        if not os.path.exists('checkpoints'):
+            os.makedirs('checkpoints')
         return 'checkpoints/%s_%08d' % (self.model_name, episode)
     
     def _get_episode_from_filename(self, filename):
