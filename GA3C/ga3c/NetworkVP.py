@@ -103,10 +103,8 @@ class NetworkVP:
         _, end_points = network_fn(self.x)
         _input = list(end_points.values())[-1]
 
-        flatten_input_shape = _input.get_shape()
-        nb_elements = flatten_input_shape[1] * flatten_input_shape[2] * flatten_input_shape[3]
-
-        self.flat = tf.reshape(_input, shape=[-1, nb_elements._value])
+        self.flat = tf.contrib.layers.flatten(_input)
+        
         self.d1 = self.dense_layer(self.flat, 256, 'dense1')
 
         self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
