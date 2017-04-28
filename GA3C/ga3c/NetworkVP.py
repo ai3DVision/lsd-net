@@ -64,7 +64,23 @@ class NetworkVP:
                 if Config.LOAD_CHECKPOINT or Config.SAVE_MODELS:
                     vars = tf.global_variables()
                     self.saver = tf.train.Saver({var.name: var for var in vars}, max_to_keep=0)
-                
+
+                # https://github.com/tensorflow/tensorflow/issues/312
+                if model_name == 'resnet_v1_50' and not Config.LOAD_CHECKPOINT:
+                    save_file = './checkpoints/resnet_v1_50.ckpt'
+                    reader = tf.train.NewCheckpointReader(save_file)
+                    saved_shapes = reader.get_variable_to_shape_map()
+                    var_names = sorted([(var.name, var.name.split(':')[0]) for var in tf.global_variables()
+                            if var.name.split(':')[0] in saved_shapes])
+                    restore_vars = []
+                    with tf.variable_scope('', reuse=True):
+                        for var_name, saved_var_name in var_names:
+                            curr_var = tf.get_variable(saved_var_name)
+                            var_shape = curr_var.get_shape().as_list()
+                            if var_shape == saved_shapes[saved_var_name]:
+                                restore_vars.append(curr_var)
+                    saver = tf.train.Saver(restore_vars)
+                    saver.restore(self.sess, save_file)
 
     def _create_graph(self):
         self.x = tf.placeholder(
