@@ -44,7 +44,7 @@ for i in range(1, len(sys.argv)):
     x, y = sys.argv[i].split('=')
     setattr(Config, x, type(getattr(Config, x))(y))
 
-Config.NETWORK_NAME = 'resnet_v1_50'
+Config.NETWORK_NAME = 'alexnet_v2'
 
 # Adjust configs for Play mode
 if Config.PLAY_MODE:
@@ -61,7 +61,7 @@ if Config.PLAY_MODE:
     network = Server().model
     env.test_ga3c(network, 1)
 else:
-    Config.LOAD_PRETRAINED = True
+    # Config.LOAD_PRETRAINED = True
 
     gym.undo_logger_setup()
 
