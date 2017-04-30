@@ -234,7 +234,7 @@ class NetworkVP:
 
     def maxpool_layer(self, input, filter_size, name, strides):
         ksize = [1, filter_size, filter_size, 1]
-        return tf.nn.max_pool(input, ksize, strides, padding='SAME')
+        return tf.nn.max_pool(input, ksize, strides, padding='SAME', name=name)
 
     def __get_base_feed_dict(self):
         return {self.var_beta: self.beta, self.var_learning_rate: self.learning_rate}
