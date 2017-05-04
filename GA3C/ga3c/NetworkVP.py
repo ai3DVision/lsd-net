@@ -31,7 +31,6 @@ import tensorflow as tf
 
 from GA3C.ga3c.Config import Config
 
-from slim.nets.nets_factory import get_network_fn
 
 class NetworkVP:
     def __init__(self, device, model_name, num_actions):
@@ -64,24 +63,7 @@ class NetworkVP:
                 if Config.LOAD_CHECKPOINT or Config.SAVE_MODELS:
                     vars = tf.global_variables()
                     self.saver = tf.train.Saver({var.name: var for var in vars}, max_to_keep=0)
-
-                # https://github.com/tensorflow/tensorflow/issues/312
-                if Config.LOAD_PRETRAINED and not Config.LOAD_CHECKPOINT:
-                    save_file = './checkpoints/%s.ckpt' % model_name
-                    reader = tf.train.NewCheckpointReader(save_file)
-                    saved_shapes = reader.get_variable_to_shape_map()
-                    var_names = sorted([(var.name, var.name.split(':')[0]) for var in tf.global_variables()
-                            if var.name.split(':')[0] in saved_shapes])
-                    restore_vars = []
-                    with tf.variable_scope('', reuse=True):
-                        for var_name, saved_var_name in var_names:
-                            curr_var = tf.get_variable(saved_var_name)
-                            var_shape = curr_var.get_shape().as_list()
-                            if var_shape == saved_shapes[saved_var_name]:
-                                restore_vars.append(curr_var)
-                    saver = tf.train.Saver(restore_vars)
-                    saver.restore(self.sess, save_file)
-                    print('Restored checkpoint from %s' % save_file)
+                
 
     def _create_graph(self):
         self.x = tf.placeholder(
@@ -95,23 +77,28 @@ class NetworkVP:
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
         
         # As implemented in A3C paper
-        # self.n1 = self.conv2d_layer(self.x, 8, 16, 'conv11', strides=[1, 4, 4, 1])
-        # self.n2 = self.conv2d_layer(self.n1, 4, 32, 'conv12', strides=[1, 2, 2, 1])
-        # _input = self.n2
+        self.n1 = self.conv2d_layer(self.x, 11, 64, 'conv11', strides=[1, 4, 4, 1])
+        self.max1 = self.maxpool_layer(self.n1, 3, 'max11', strides=[1, 2, 2, 1])
+        self.n2 = self.conv2d_layer(self.max1, 5, 256, 'conv12', strides=[1, 1, 1, 1])
+        self.max2 = self.maxpool_layer(self.n2, 3, 'max22', strides=[1, 2, 2, 1])
+        self.n3 = self.conv2d_layer(self.max2, 3, 384, 'conv13', strides=[1, 1, 1, 1])
+        self.n4 = self.conv2d_layer(self.n3, 3, 384, 'conv14', strides=[1, 1, 1, 1])
+        self.n5 = self.conv2d_layer(self.n4, 3, 256, 'conv15', strides=[1, 1, 1, 1])
+        self.max3 = self.maxpool_layer(self.n5, 3, 'max33', strides=[1, 2, 2, 1])
+        _input = self.max3
 
-        network_fn = get_network_fn(name=Config.NETWORK_NAME, num_classes=256, is_training=not Config.PLAY_MODE)
-        _, end_points = network_fn(self.x)
-        _input = list(end_points.values())[-1]
+        flatten_input_shape = _input.get_shape()
+        nb_elements = flatten_input_shape[1] * flatten_input_shape[2] * flatten_input_shape[3]
 
-        # self.flat = tf.contrib.layers.flatten(_input)
-        
-        # self.d1 = self.dense_layer(self.flat, 256, 'dense1')
-        self.d1 = _input
+        self.flat = tf.reshape(_input, shape=[-1, nb_elements._value])
 
-        self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
+        self.d1 = self.dense_layer(self.flat, 4096, 'dense1')
+        self.d2 = self.dense_layer(self.d1, 4096, 'dense2')
+
+        self.logits_v = tf.squeeze(self.dense_layer(self.d2, 1, 'logits_v', func=None), axis=[1])
         self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)
 
-        self.logits_p = self.dense_layer(self.d1, self.num_actions, 'logits_p', func=None)
+        self.logits_p = self.dense_layer(self.d2, self.num_actions, 'logits_p', func=None)
         if Config.USE_LOG_SOFTMAX:
             self.softmax_p = tf.nn.softmax(self.logits_p)
             self.log_softmax_p = tf.nn.log_softmax(self.logits_p)
