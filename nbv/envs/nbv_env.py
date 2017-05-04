@@ -143,12 +143,18 @@ class NBVEnvV0(Env):
 		return image
 
 	def test_dqn(self, dqnAgent, num_episode, data_type='test'):
-		num_correct = 0
-		total_groups = 0
 		accuracies = []
+		movements = []
+		max_steps_instances = []
+		max_steps_object_instances = []
+		object_movements = {}
 
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
+			num_correct = 0
+			total_groups = 0
+			move_count = 0
+			max_steps_instance = 0
 			for category in self.data[data_type]:
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
@@ -156,6 +162,7 @@ class NBVEnvV0(Env):
 					image_idx = random.randint(1, group_size) - 1
 
 					# Max steps is self.max_steps
+					took_max_steps = False
 					for j in range(self.max_steps):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
@@ -169,35 +176,68 @@ class NBVEnvV0(Env):
 							q_values = q_values[0]
 							q_values = q_values[0:-2]
 							action = dqnAgent.policy.select_action(q_values)
+							took_max_steps = True
 
 						if self.actions[action] == 'CW':
+							prev_image_idx = image_idx
 							image_idx = (image_idx + 1) % group_size
+							move_count = move_count + 1
+							if category not in object_movements:
+								object_movements[category] = {}
+							if group not in object_movements[category]:
+								object_movements[category][group] = []
+							object_movements[category][group].append((prev_image_idx, image_idx))
 						elif self.actions[action] == 'CCW':
+							prev_image_idx = image_idx
 							image_idx = (image_idx - 1) % group_size
+							move_count = move_count + 1
+							if category not in object_movements:
+								object_movements[category] = {}
+							if group not in object_movements[category]:
+								object_movements[category][group] = []
+							object_movements[category][group].append((prev_image_idx, image_idx))
 						elif self.actions[action] == category:
 							num_correct = num_correct + 1
 							break
 						else:
 							break
-			
+
+					if took_max_steps:
+						max_steps_instance = max_steps_instance + 1
+						max_steps_object_instances.append(group)
+
 			accuracy = num_correct / float(total_groups)
 			print('Accuracy: %f' % accuracy)
+			print('Movement: %d' % move_count)
+			print('Number of objects that took max steps: %d' % max_steps_instance)
 			accuracies.append(accuracy)
+			movements.append(move_count)
+			max_steps_instances.append(max_steps_instance)
 			sys.stdout.flush()
 			
 		print('The accuracy is %f +/- %f' % (np.mean(accuracies), np.std(accuracies)))
+		print('The movement is %f +/- %f' % (np.mean(movements), np.std(movements)))
+		print('The number of objects that took the max number of steps is %f +/- %f' % (np.mean(max_steps_instances), np.std(max_steps_instances)))
+		print('The object movements are %s' % str(object_movements))
+		print('The objects that took the max number of steps is %s' % str(max_steps_object_instances))
 		sys.stdout.flush()
 
 	def test_ga3c(self, network, num_episode, data_type='test'):
-		num_correct = 0
-		total_groups = 0
 		accuracies = []
 
 		nb_frames = Config.STACKED_FRAMES
 		frame_q = Queue(maxsize=nb_frames)
+		movements = []
+		max_steps_instances = []
+		max_steps_object_instances = []
+		object_movements = {}
 
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
+			num_correct = 0
+			total_groups = 0
+			move_count = 0
+			max_steps_instance = 0
 			for category in self.data[data_type]:
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
@@ -205,6 +245,7 @@ class NBVEnvV0(Env):
 					image_idx = random.randint(1, group_size) - 1
 
 					# Max steps is self.max_steps
+					took_max_steps = False
 					for j in range(self.max_steps):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
@@ -228,11 +269,26 @@ class NBVEnvV0(Env):
 							p = p[0]
 							p = p[0:-2]
 							action = np.argmax(p)
-
+							took_max_steps = True
+							
 						if self.actions[action] == 'CW':
+							prev_image_idx = image_idx
 							image_idx = (image_idx + 1) % group_size
+							move_count = move_count + 1
+							if category not in object_movements:
+								object_movements[category] = {}
+							if group not in object_movements[category]:
+								object_movements[category][group] = []
+							object_movements[category][group].append((prev_image_idx, image_idx))
 						elif self.actions[action] == 'CCW':
+							prev_image_idx = image_idx
 							image_idx = (image_idx - 1) % group_size
+							move_count = move_count + 1
+							if category not in object_movements:
+								object_movements[category] = {}
+							if group not in object_movements[category]:
+								object_movements[category][group] = []
+							object_movements[category][group].append((prev_image_idx, image_idx))
 						elif self.actions[action] == category:
 							num_correct = num_correct + 1
 							break
@@ -240,13 +296,25 @@ class NBVEnvV0(Env):
 							break
 
 					frame_q.queue.clear()
+					
+					if took_max_steps:
+						max_steps_instance = max_steps_instance + 1
+						max_steps_object_instances.append(group)
 
 			accuracy = num_correct / float(total_groups)
 			print('Accuracy: %f' % accuracy)
+			print('Movement: %d' % move_count)
+			print('Number of objects that took max steps: %d' % max_steps_instance)
 			accuracies.append(accuracy)
+			movements.append(move_count)
+			max_steps_instances.append(max_steps_instance)
 			sys.stdout.flush()
 
 		print('The accuracy is %f +/- %f' % (np.mean(accuracies), np.std(accuracies)))
+		print('The movement is %f +/- %f' % (np.mean(movements), np.std(movements)))
+		print('The number of objects that took the max number of steps is %f +/- %f' % (np.mean(max_steps_instances), np.std(max_steps_instances)))
+		print('The object movements are %s' % str(object_movements))
+		print('The objects that took the max number of steps is %s' % str(max_steps_object_instances))
 		sys.stdout.flush()
 
 class NBVEnvV1(NBVEnvV0):
