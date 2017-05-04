@@ -41,8 +41,6 @@ class Config:
     LOAD_CHECKPOINT = False
     # If 0, the latest checkpoint is loaded
     LOAD_EPISODE = 0 
-    # Load pretrained model
-    LOAD_PRETRAINED = False
 
     #########################################################################
     # Number of agents, predictors, trainers and other system settings
@@ -87,8 +85,8 @@ class Config:
     IMAGE_HEIGHT = 224
 
     # Total number of episodes and annealing frequency
-    EPISODES = 400000
-    ANNEALING_EPISODE_COUNT = 400000
+    EPISODES = 5000000
+    ANNEALING_EPISODE_COUNT = 1000000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.01
@@ -125,7 +123,7 @@ class Config:
     # Enable to save models every SAVE_FREQUENCY episodes
     SAVE_MODELS = True
     # Save every SAVE_FREQUENCY episodes
-    SAVE_FREQUENCY = 1000
+    SAVE_FREQUENCY = 10000
     
     # Print stats every PRINT_STATS_FREQUENCY episodes
     PRINT_STATS_FREQUENCY = 1
