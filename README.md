@@ -15,6 +15,11 @@ wget http://maxwell.cs.umass.edu/mvcnn-data/modelnet40v1.tar
 tar -xvf modelnet40v1.tar
 rm modelnet40v1.tar
 
+To create data_dict.txt, run
+```
+python nbv/envs/format_data.py
+```
+
 ## Test the NBV env
 ```
 python test_env.py
@@ -37,7 +42,7 @@ python ga3c_nbv.py
 
 ## Test the GA3C on NBV
 ```
-python ga3c_nbv.py PLAY_MODE=1 LOAD_EPISODE={{EPISODE NUMBER}}
+python ga3c_nbv.py PLAY_MODE=1 LOAD_EPISODE={EPISODE NUMBER}
 ```
 
 ## References
@@ -45,5 +50,4 @@ python ga3c_nbv.py PLAY_MODE=1 LOAD_EPISODE={{EPISODE NUMBER}}
 * [Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and Graves, Alex and Antonoglou, Ioannis and Wierstra, Daan and Riedmiller, Martin A., CoRR 2013, Playing Atari with Deep Reinforcement Learning](https://arxiv.org/abs/1312.5602)
 * [Babaeizadeh, Mohammad and Frosio, Iuri and Tyree, Stephen and Clemons, Jason and Kautz, Jan. ICLR 2017, Reinforcement Learning thorugh Asynchronous Advantage Actor-Critic on a GPU](https://arxiv.org/abs/1611.06256)
 * [NVlabs/GA3C](https://github.com/NVlabs/GA3C)
-* [Tensorflow Models](https://github.com/tensorflow/models)
 * [Dataset](http://maxwell.cs.umass.edu/mvcnn-data/)
