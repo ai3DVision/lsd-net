@@ -155,7 +155,9 @@ class NBVEnvV0(Env):
 			total_groups = 0
 			move_count = 0
 			max_steps_instance = 0
+			group_moved_count = 0
 			for category in self.data[data_type]:
+				counted = False
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
 					group_size = self.data[data_type][category][group]['size']
@@ -192,6 +194,9 @@ class NBVEnvV0(Env):
 							if group not in object_movements[category]:
 								object_movements[category][group] = []
 							object_movements[category][group].append((prev_image_idx, image_idx))
+							if not counted:
+								counted = True
+								group_moved_count = group_moved_count + 1
 						elif self.actions[action] == 'CCW':
 							prev_image_idx = image_idx
 							image_idx = (image_idx - 1) % group_size
@@ -201,6 +206,9 @@ class NBVEnvV0(Env):
 							if group not in object_movements[category]:
 								object_movements[category][group] = []
 							object_movements[category][group].append((prev_image_idx, image_idx))
+							if not counted:
+								counted = True
+								group_moved_count = group_moved_count + 1
 						elif self.actions[action] == category:
 							num_correct = num_correct + 1
 							break
@@ -243,7 +251,9 @@ class NBVEnvV0(Env):
 			total_groups = 0
 			move_count = 0
 			max_steps_instance = 0
+			group_moved_count = 0
 			for category in self.data[data_type]:
+				counted = False
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
 					group_size = self.data[data_type][category][group]['size']
@@ -290,6 +300,9 @@ class NBVEnvV0(Env):
 							if group not in object_movements[category]:
 								object_movements[category][group] = []
 							object_movements[category][group].append((prev_image_idx, image_idx))
+							if not counted:
+								counted = True
+								group_moved_count = group_moved_count + 1
 						elif self.actions[action] == 'CCW':
 							prev_image_idx = image_idx
 							image_idx = (image_idx - 1) % group_size
@@ -299,6 +312,9 @@ class NBVEnvV0(Env):
 							if group not in object_movements[category]:
 								object_movements[category][group] = []
 							object_movements[category][group].append((prev_image_idx, image_idx))
+							if not counted:
+								counted = True
+								group_moved_count = group_moved_count + 1
 						elif self.actions[action] == category:
 							num_correct = num_correct + 1
 							break
