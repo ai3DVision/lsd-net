@@ -142,7 +142,7 @@ class NBVEnvV0(Env):
 		image = np.array(Image.open(image_path))
 		return image
 
-	def test_dqn(self, dqnAgent, num_episode, data_type='test'):
+	def test_dqn(self, dqnAgent, num_episode, data_type='test', can_move=True):
 		accuracies = []
 		movements = []
 		max_steps_instances = []
@@ -177,6 +177,11 @@ class NBVEnvV0(Env):
 							q_values = q_values[0:-2]
 							action = dqnAgent.policy.select_action(q_values)
 							took_max_steps = True
+
+						if not can_move:
+							q_values = q_values[0]
+							q_values = q_values[0:-2]
+							action = dqnAgent.policy.select_action(q_values)
 
 						if self.actions[action] == 'CW':
 							prev_image_idx = image_idx
@@ -222,7 +227,7 @@ class NBVEnvV0(Env):
 		print('The objects that took the max number of steps is %s' % str(max_steps_object_instances))
 		sys.stdout.flush()
 
-	def test_ga3c(self, network, num_episode, data_type='test'):
+	def test_ga3c(self, network, num_episode, data_type='test', can_move=True):
 		accuracies = []
 
 		nb_frames = Config.STACKED_FRAMES
@@ -270,6 +275,11 @@ class NBVEnvV0(Env):
 							p = p[0:-2]
 							action = np.argmax(p)
 							took_max_steps = True
+						
+						if not can_move:
+							p = p[0]
+							p = p[0:-2]
+							action = np.argmax(p)
 							
 						if self.actions[action] == 'CW':
 							prev_image_idx = image_idx
