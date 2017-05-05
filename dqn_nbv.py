@@ -39,6 +39,7 @@ def main():  # noqa: D103
     parser.add_argument('-d', '--dir', default='', type=str, help='Directory')
     parser.add_argument('-n', '--number', default='', type=str, help='Model number')
     parser.add_argument('--double', action='store_true', default=False, help='Cancel')
+    parser.add_argument('--stop', action='store_true', default=False, help='Stop movement')
 
     args = parser.parse_args()
 
@@ -152,7 +153,7 @@ def main():  # noqa: D103
     elif args.phase == 'test':
         if 'Next-Best-View' in args.env:
             dqnAgent.policy = GreedyEpsilonPolicy(0, num_actions)
-            env.test_dqn(dqnAgent, num_episode)
+            env.test_dqn(dqnAgent, num_episode, can_move=not args.stop)
         else:
             dqnAgent.policy = GreedyEpsilonPolicy(epsilon, num_actions)
             dqnAgent.evaluate(env, num_episode)
