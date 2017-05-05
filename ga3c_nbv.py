@@ -60,7 +60,7 @@ if Config.PLAY_MODE:
 
     env = gym.make(Config.ATARI_GAME)
     network = Server().model
-    env.test_ga3c(network, 1)
+    env.test_ga3c(network, Config.TEST_EPISODES, can_move=not Config.STOP_MOVEMENT)
 else:
     # Config.LOAD_PRETRAINED = True
 
