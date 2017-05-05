@@ -34,7 +34,7 @@ def main():  # noqa: D103
     parser.add_argument('--input_shape', default=(224,224), type=int, help='Input shape')
     parser.add_argument('--phase', default='train', type=str, help='Train/Test/Video')
     parser.add_argument('-r', '--render', action='store_true', default=False, help='Render')
-    parser.add_argument('--model', default='resnet_LSTM_network', type=str, help='Type of model')
+    parser.add_argument('--model', default='resnet_Q_network', type=str, help='Type of model')
     parser.add_argument('-c', action='store_false', default=True, help='Cancel')
     parser.add_argument('-d', '--dir', default='', type=str, help='Directory')
     parser.add_argument('-n', '--number', default='', type=str, help='Model number')
