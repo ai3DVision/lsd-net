@@ -9,11 +9,12 @@
 
 ## Setup the NBV env
 Download the modelnet40v1 data from http://maxwell.cs.umass.edu/mvcnn-data/ and put the modelnet40v1 folder inside the nbv/envs/ folder
-
+```
 cd nbv/envs/
 wget http://maxwell.cs.umass.edu/mvcnn-data/modelnet40v1.tar
 tar -xvf modelnet40v1.tar
 rm modelnet40v1.tar
+```
 
 To create data_dict.txt, run
 ```
