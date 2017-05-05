@@ -16,7 +16,7 @@ from keras.optimizers import Adam
 
 from DQN.dqn.dqn import DQNAgent
 from DQN.dqn.objectives import huber_loss
-from DQN.dqn.preprocessors import NBVPreprocessor
+from DQN.dqn.preprocessors import NBVPreprocessor, AtariPreprocessor
 from DQN.dqn.policy import GreedyEpsilonPolicy, LinearDecayGreedyEpsilonPolicy
 from DQN.dqn.memory import BasicMemory, NaiveMemory
 from DQN.dqn.constants import model_path, model_file
@@ -79,7 +79,7 @@ def main():  # noqa: D103
     num_steps = 200000
 
     # Number of frames in the sequence
-    window = 1
+    window = 3
 
     # Number of channels in network input
     num_channels = 3
@@ -99,7 +99,7 @@ def main():  # noqa: D103
                              args.input_shape, 
                              num_actions, 
                              model_name=args.model)
-    preprocessor = NBVPreprocessor(args.input_shape)
+    preprocessor = AtariPreprocessor(args.input_shape)
     policy = LinearDecayGreedyEpsilonPolicy(num_actions, start_value, end_value, num_steps)
     memory_size = 100000
     gamma = 0.5
@@ -140,7 +140,7 @@ def main():  # noqa: D103
                         print_summary=print_summary,
                         max_grad=1.,
                         double_dqn=args.double,
-                        use_history=False)
+                        use_history=True)
     dqnAgent.compile(Adam(lr=alpha), huber_loss, output=output_dir)
     
     if args.dir:
