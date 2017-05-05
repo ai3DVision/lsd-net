@@ -28,15 +28,12 @@ def huber_loss(y_true, y_pred, max_grad=1.):
     with tf.name_scope('HuberLoss'):
         residual = y_true - y_pred
 
-        if max_grad == np.inf:
-            huber_loss = K.square(residual) / 2
-        else:
-            lessthan = K.abs(residual) <= max_grad
-            
-            sq_loss = K.square(residual) / 2
-            abs_loss = max_grad * K.abs(residual) - K.square(max_grad) / 2
-            
-            huber_loss = tf.where(lessthan, sq_loss, abs_loss)
+        lessthan = K.abs(residual) <= max_grad
+        
+        sq_loss = K.square(residual) / 2
+        abs_loss = max_grad * K.abs(residual) - K.square(max_grad) / 2
+        
+        huber_loss = tf.where(lessthan, sq_loss, abs_loss)
 
     return huber_loss
 
