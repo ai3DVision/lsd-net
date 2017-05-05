@@ -27,7 +27,7 @@ from GA3C.ga3c.Config import Config
 class NBVEnvV0(Env):
 	metadata = {'render.modes': ['human']}
 
-	def __init__(self, max_steps):
+	def __init__(self, max_steps, movement=True):
 		# Path to data and images
 		self.dir_path = os.path.dirname(os.path.realpath(__file__))
 		self.data_folder = os.path.join(self.dir_path, output_folder_name)
@@ -55,9 +55,10 @@ class NBVEnvV0(Env):
 				label = self.data['train'][category][group]['label']
 				self.actions[label] = category
 
-		# Add turn clockwise and turn counter clockwise actions
-		self.actions[len(self.actions)] = 'CW'
-		self.actions[len(self.actions)] = 'CCW'
+		if movement:
+			# Add turn clockwise and turn counter clockwise actions
+			self.actions[len(self.actions)] = 'CW'
+			self.actions[len(self.actions)] = 'CCW'
 
 		self.nA = len(self.actions)
 		self.action_space = spaces.Discrete(self.nA)
@@ -402,3 +403,7 @@ class NBVEnvV5(NBVEnvV0):
 		   and self.actions[action] != self.category:
 			reward = -1
 		return obs, reward, is_terminal, info
+
+class NBVEnvV6(NBVEnvV0):
+	def __init__(self, max_steps):
+		NBVEnvV0.__init__(self, max_steps, movement=False)
