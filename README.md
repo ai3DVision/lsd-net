@@ -33,7 +33,7 @@ python dqn_nbv.py
 
 ## Test the DQN
 ```
-python dqn_nbv.py --phase test --dir {WEIGHT DIRECTORY}
+python dqn_nbv.py --phase test --dir {WEIGHT DIRECTORY} --number {EPISODE NUMBER}
 ```
 
 ## Train the GA3C on NBV
