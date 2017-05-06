@@ -183,9 +183,8 @@ class NBVEnvV0(Env):
 
 						if j == self.max_steps-1 or not can_move:
 							q_values = q_values[0]
-							q_values = q_values[0:40]
 							dqnAgent.policy.num_actions = 40
-							action = dqnAgent.policy.select_action(q_values)
+							action = dqnAgent.policy.select_action(q_values[0:40])
 
 						if j == self.max_steps-1:
 							took_max_steps = True
