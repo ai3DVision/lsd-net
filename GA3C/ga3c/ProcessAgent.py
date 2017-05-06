@@ -77,10 +77,39 @@ class ProcessAgent(Process):
         return p, v
 
     def select_action(self, prediction):
-        if Config.PLAY_MODE:
-            action = np.argmax(prediction)
+        if 'Next-Best-View' in Config.ATARI_GAME \
+        and self.env.game.env.action_tree_hierarchy:
+            num_rank_1_actions = 3
+            num_rank_2_actions = 40
+            
+            rank_1_prediction = prediction[-num_rank_1_actions:]
+            rank_2_prediction = prediction[:-num_rank_1_actions]
+            
+            rank_1_actions = self.actions[-num_rank_1_actions:]
+            rank_2_actions = self.actions[:-num_rank_1_actions]
+            
+            rank_1_prediction = rank_1_prediction / np.sum(rank_1_prediction)
+            rank_2_prediction = rank_2_prediction / np.sum(rank_2_prediction)
+
+            if Config.PLAY_MODE:
+                rank_1_action = np.argmax(rank_1_prediction)
+            else:
+                rank_1_action = np.random.choice(rank_1_actions, p=rank_1_prediction)
+
+            if rank_1_action == 42:
+                if Config.PLAY_MODE:
+                    rank_2_action = np.argmax(rank_2_prediction)
+                else:
+                    rank_2_action = np.random.choice(rank_2_actions, p=rank_2_prediction)
+                action = rank_2_action
+            else:
+                action = rank_1_action
         else:
-            action = np.random.choice(self.actions, p=prediction)
+            if Config.PLAY_MODE:
+                action = np.argmax(prediction)
+            else:
+                action = np.random.choice(self.actions, p=prediction)
+                    
         return action
 
     def run_episode(self):
