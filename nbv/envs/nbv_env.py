@@ -251,6 +251,8 @@ class NBVEnvV0(Env):
 		max_steps_object_instances = []
 		object_movements = {}
 
+		agent = ProcessAgent(0, None, None, None)
+
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
 			num_correct = 0
@@ -284,12 +286,15 @@ class NBVEnvV0(Env):
 						x_ = np.transpose(x_, [1, 2, 0])
 
 						p, v = network.predict_p_and_v(np.array([x_]))
-						action = np.argmax(p[0])
+						action = agent.select_action(p[0])
 
 						if j == self.max_steps-1 or not can_move:
 							p = p[0]
-							p = p[0:-2]
-							action = np.argmax(p)
+							p[40] = 0
+							p[41] = 0
+							if agent.env.game.env.action_tree_hierarchy:
+								p[42] = 1
+							action = agent.select_action(p)
 						
 						if j == self.max_steps-1:
 							took_max_steps = True
