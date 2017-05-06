@@ -13,6 +13,10 @@ register(
 env = gym.make('Next-Best-View-test-v0')
 env.seed(seed)
 
+# Check action tree hierarchy 
+assert(not env.action_tree_hierarchy)
+assert('CLASSIFY' not in list(env.actions.values()))
+
 # Change the render delay time
 env.set_render_delay(1)
 
@@ -71,6 +75,10 @@ register(
 env = gym.make('Next-Best-View-test-v1')
 env.seed(seed)
 
+# Check action tree hierarchy 
+assert(not env.action_tree_hierarchy)
+assert('CLASSIFY' not in list(env.actions.values()))
+
 # Test max steps
 obs = env.reset()
 category = env.category
@@ -83,4 +91,15 @@ for i in range(max_steps):
 		assert(not is_terminal)
 	else:
 		assert(is_terminal)
-		
+
+register(
+    id='Next-Best-View-test-v7',
+    entry_point='nbv.envs.nbv_env:NBVEnvV0',
+    kwargs={'max_steps': max_steps, 'action_tree_hierarchy': True})
+
+env = gym.make('Next-Best-View-test-v7')
+env.seed(seed)
+
+# Check action tree hierarchy
+assert(env.action_tree_hierarchy)
+assert('CLASSIFY' in list(env.actions.values()))
