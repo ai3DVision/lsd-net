@@ -294,6 +294,8 @@ class NBVEnvV0(Env):
 							p[41] = 0
 							if agent.env.game.env.action_tree_hierarchy:
 								p[42] = 1
+							else:
+								p = p / np.sum(p)
 							action = agent.select_action(p)
 						
 						if j == self.max_steps-1:
