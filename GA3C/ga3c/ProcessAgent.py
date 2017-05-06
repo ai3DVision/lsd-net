@@ -105,6 +105,8 @@ class ProcessAgent(Process):
             else:
                 action = rank_1_action
         else:
+            prediction = prediction / np.sum(prediction)
+            
             if Config.PLAY_MODE:
                 action = np.argmax(prediction)
             else:
