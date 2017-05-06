@@ -223,7 +223,33 @@ class DQNAgent:
         selected action
         """
         q_values = self.calc_q_values(state)
-        return self.policy.select_action(q_values), q_values
+
+        # Action tree hierarchy implementation
+        if 'env' in kwargs \
+        and kwargs['env'].action_tree_hierarchy \
+        and 'Next-Best-View' in str(kwargs['env']):
+            num_rank_1_actions = 3
+            num_rank_2_actions = 40
+            rank_1_q_values = q_values[:,-num_rank_1_actions:]
+            rank_2_q_values = q_values[:,:-num_rank_1_actions]
+
+            self.policy.num_actions = num_rank_1_actions
+            rank_1_action = self.policy.select_action(rank_1_q_values)
+
+            # If action is the last action i.e. 'CLASSIFY' 
+            # then select the classification action, 
+            # else it is either 'CW'/'CCW' movement action
+            if rank_1_action == [num_rank_1_actions-1]:
+                self.policy.num_actions = num_rank_2_actions
+                rank_2_action = self.policy.select_action(rank_2_q_values)
+                action = rank_2_action
+            else:
+                rank_1_action[0] = rank_1_action[0] + num_rank_2_actions
+                action = rank_1_action
+        else:
+            action = self.policy.select_action(q_values)
+            
+        return action, q_values
 
     def update_policy(self):
         """Update your policy.
@@ -340,7 +366,7 @@ class DQNAgent:
         for iteration in range(num_iterations+1):
             # Given state, select an action
             state = np.array([state])
-            action, q_values = self.select_action(state)
+            action, q_values = self.select_action(state, env=env)
             action = action[0]
 
             # Perform action on env
