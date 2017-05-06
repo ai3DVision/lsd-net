@@ -181,16 +181,14 @@ class NBVEnvV0(Env):
 						action, q_values = dqnAgent.select_action(state)
 						action = action[0]
 
-						if j == self.max_steps-1:
+						if j == self.max_steps-1 or not can_move:
 							q_values = q_values[0]
 							q_values = q_values[0:-2]
+							dqnAgent.policy.num_actions = 40
 							action = dqnAgent.policy.select_action(q_values)
-							took_max_steps = True
 
-						if not can_move:
-							q_values = q_values[0]
-							q_values = q_values[0:-2]
-							action = dqnAgent.policy.select_action(q_values)
+						if j == self.max_steps-1:
+							took_max_steps = True
 
 						if self.actions[action] == 'CW':
 							prev_image_idx = image_idx
@@ -287,18 +285,15 @@ class NBVEnvV0(Env):
 
 						p, v = network.predict_p_and_v(np.array([x_]))
 						action = np.argmax(p[0])
+
+						if j == self.max_steps-1 or not can_move:
+							p = p[0]
+							p = p[0:-2]
+							action = np.argmax(p)
 						
 						if j == self.max_steps-1:
-							p = p[0]
-							p = p[0:-2]
-							action = np.argmax(p)
 							took_max_steps = True
-						
-						if not can_move:
-							p = p[0]
-							p = p[0:-2]
-							action = np.argmax(p)
-							
+
 						if self.actions[action] == 'CW':
 							prev_image_idx = image_idx
 							image_idx = (image_idx + 1) % group_size
