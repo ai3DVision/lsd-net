@@ -226,8 +226,8 @@ class DQNAgent:
 
         # Action tree hierarchy implementation
         if 'env' in kwargs \
-        and kwargs['env'].action_tree_hierarchy \
-        and 'Next-Best-View' in str(kwargs['env']):
+        and 'Next-Best-View' in str(kwargs['env']) \
+        and kwargs['env'].action_tree_hierarchy:
             num_rank_1_actions = 3
             num_rank_2_actions = 40
             rank_1_q_values = q_values[:,-num_rank_1_actions:]
