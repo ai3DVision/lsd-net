@@ -27,7 +27,7 @@ from GA3C.ga3c.Config import Config
 class NBVEnvV0(Env):
 	metadata = {'render.modes': ['human']}
 
-	def __init__(self, max_steps, movement=True):
+	def __init__(self, max_steps, movement=True, action_tree_hierarchy=False):
 		# Path to data and images
 		self.dir_path = os.path.dirname(os.path.realpath(__file__))
 		self.data_folder = os.path.join(self.dir_path, output_folder_name)
@@ -60,11 +60,17 @@ class NBVEnvV0(Env):
 			self.actions[len(self.actions)] = 'CW'
 			self.actions[len(self.actions)] = 'CCW'
 
+		if action_tree_hierarchy:
+			# Add classification action tree
+			self.actions[len(self.actions)] = 'CLASSIFY'
+
 		self.nA = len(self.actions)
 		self.action_space = spaces.Discrete(self.nA)
 
 		self.max_steps = max_steps
-
+		self.movement = movement
+		self.action_tree_hierarchy = action_tree_hierarchy
+		
 	def reset(self):
 		# Get a random image and store the state
 		categories = list(self.data['train'].keys())

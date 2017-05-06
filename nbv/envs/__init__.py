@@ -35,3 +35,8 @@ register(
     id='Next-Best-View-v6',
     entry_point='nbv.envs.nbv_env:NBVEnvV6',
     kwargs={'max_steps': 12})
+
+register(
+    id='Next-Best-View-v7',
+    entry_point='nbv.envs.nbv_env:NBVEnvV0',
+    kwargs={'max_steps': 12, 'action_tree_hierarchy': True})
