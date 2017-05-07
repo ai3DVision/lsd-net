@@ -23,6 +23,7 @@ import numpy as np
 import scipy.misc as misc
 
 from GA3C.ga3c.Config import Config
+from GA3C.ga3c.ProcessAgent import ProcessAgent
 
 class NBVEnvV0(Env):
 	metadata = {'render.modes': ['human']}
