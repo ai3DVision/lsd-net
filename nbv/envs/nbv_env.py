@@ -274,8 +274,11 @@ class NBVEnvV0(Env):
 						image = np.dot(image[..., :3], [0.299, 0.587, 0.114])
 						image = misc.imresize(image, [Config.IMAGE_HEIGHT, Config.IMAGE_WIDTH], 'bilinear')
 						image = image.astype(np.float32) / 128.0 - 1.0
-						frame_q.put(image)
 						
+						if frame_q.full():
+							frame_q.get()
+							frame_q.put(image)
+
 						while not frame_q.full():
 							frame_q.put(image)
 
