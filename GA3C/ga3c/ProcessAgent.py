@@ -92,7 +92,7 @@ class ProcessAgent(Process):
             rank_2_prediction = rank_2_prediction / np.sum(rank_2_prediction)
 
             if Config.PLAY_MODE:
-                rank_1_action = np.argmax(rank_1_prediction)
+                rank_1_action = np.argmax(rank_1_prediction) + num_rank_2_actions
             else:
                 rank_1_action = np.random.choice(rank_1_actions, p=rank_1_prediction)
 
