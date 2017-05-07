@@ -24,6 +24,8 @@ import scipy.misc as misc
 
 from GA3C.ga3c.Config import Config
 
+from DQN.dqn.preprocessors import HistoryPreprocessor
+
 class NBVEnvV0(Env):
 	metadata = {'render.modes': ['human']}
 
@@ -155,6 +157,7 @@ class NBVEnvV0(Env):
 		max_steps_instances = []
 		max_steps_object_instances = []
 		object_movements = {}
+		hp = None
 
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
@@ -176,6 +179,12 @@ class NBVEnvV0(Env):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
 						state = np.array(Image.open(image_path))
+
+						state = dqnAgent.preprocessor.process_state_for_memory(state)
+						if dqnAgent.use_history:
+							if hp == None:
+								hp = HistoryPreprocessor(state.shape, dqnAgent.window)
+							state = hp.process_state_for_network(state)
 
 						state = np.array([state])
 						action, q_values = dqnAgent.select_action(state)
