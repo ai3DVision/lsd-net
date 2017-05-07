@@ -34,6 +34,7 @@ import gym
 
 from GA3C.ga3c.Config import Config
 from GA3C.ga3c.Server import Server
+from GA3C.ga3c.ProcessAgent import ProcessAgent
 
 import nbv.envs.nbv_env
 
@@ -60,7 +61,8 @@ if Config.PLAY_MODE:
 
     env = gym.make(Config.ATARI_GAME)
     network = Server().model
-    env.test_ga3c(network, Config.TEST_EPISODES, can_move=not Config.STOP_MOVEMENT)
+    agent = ProcessAgent(0, None, None, None)
+    env.test_ga3c(network, agent, Config.TEST_EPISODES, can_move=not Config.STOP_MOVEMENT)
 else:
     # Config.LOAD_PRETRAINED = True
 

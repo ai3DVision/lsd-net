@@ -23,7 +23,6 @@ import numpy as np
 import scipy.misc as misc
 
 from GA3C.ga3c.Config import Config
-from GA3C.ga3c.ProcessAgent import ProcessAgent
 
 class NBVEnvV0(Env):
 	metadata = {'render.modes': ['human']}
@@ -241,7 +240,7 @@ class NBVEnvV0(Env):
 		print('The objects that took the max number of steps is %s' % str(max_steps_object_instances))
 		sys.stdout.flush()
 
-	def test_ga3c(self, network, num_episode, data_type='test', can_move=True):
+	def test_ga3c(self, network, agent, num_episode, data_type='test', can_move=True):
 		accuracies = []
 
 		nb_frames = Config.STACKED_FRAMES
@@ -250,8 +249,6 @@ class NBVEnvV0(Env):
 		max_steps_instances = []
 		max_steps_object_instances = []
 		object_movements = {}
-
-		agent = ProcessAgent(0, None, None, None)
 
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
