@@ -45,9 +45,9 @@ for i in range(1, len(sys.argv)):
     x, y = sys.argv[i].split('=')
     setattr(Config, x, type(getattr(Config, x))(y))
 
-Config.ATARI_GAME = 'Next-Best-View-v0'
-Config.NETWORK_NAME = 'alexnet_v2'
-
+Config.ATARI_GAME = 'Next-Best-View-v7'
+Config.NETWORK_NAME = 'alexnet-v2'
+Config.LOAD_CHECKPOINT = True
 # Adjust configs for Play mode
 if Config.PLAY_MODE:
     Config.AGENTS = 1
