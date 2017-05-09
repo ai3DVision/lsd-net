@@ -113,7 +113,7 @@ class Config:
     TRAINING_MIN_BATCH_SIZE = 0
     
     # Probability of random action
-    ACTION_EPSILON = 0.10
+    ACTION_EPSILON = 0.00
 
     #########################################################################
     # Log and save
