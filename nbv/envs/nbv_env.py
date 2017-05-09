@@ -260,6 +260,7 @@ class NBVEnvV0(Env):
 		max_steps_instances = []
 		max_steps_object_instances = []
 		object_movements = {}
+		object_movements_count = {}
 
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
@@ -340,6 +341,11 @@ class NBVEnvV0(Env):
 								group_moved_count = group_moved_count + 1
 						elif self.actions[action] == category:
 							num_correct = num_correct + 1
+
+							if move_count not in object_movements_count:
+								object_movements_count[move_count] = 0
+							object_movements_count[move_count] = object_movements_count[move_count] + 1
+
 							break
 						else:
 							break
@@ -355,6 +361,7 @@ class NBVEnvV0(Env):
 			print('Movement: %d' % move_count)
 			print('Number of objects that moved: %d' % group_moved_count)
 			print('Number of objects that took max steps: %d' % max_steps_instance)
+			print('Move counter: %s' % str(object_movements_count))
 			accuracies.append(accuracy)
 			movements.append(move_count)
 			max_steps_instances.append(max_steps_instance)
