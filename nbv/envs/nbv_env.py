@@ -260,7 +260,6 @@ class NBVEnvV0(Env):
 		max_steps_instances = []
 		max_steps_object_instances = []
 		object_movements = {}
-		object_movements_count = {}
 
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
@@ -270,6 +269,7 @@ class NBVEnvV0(Env):
 			max_steps_instance = 0
 			group_moved_count = 0
 			max_steps_correct = 0
+			object_movements_count = {}
 			for category in self.data[data_type]:
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
@@ -370,7 +370,7 @@ class NBVEnvV0(Env):
 			print('Number of objects that moved: %d' % group_moved_count)
 			print('Number of objects that took max steps: %d' % max_steps_instance)
 			print('Number of objects that took max steps and classify correctly: %d' % max_steps_correct)
-			print('Move counter: %s' % str(object_movements_count))
+			print('Move counter for correct classification: %s' % str(object_movements_count))
 			accuracies.append(accuracy)
 			movements.append(move_count)
 			max_steps_instances.append(max_steps_instance)
