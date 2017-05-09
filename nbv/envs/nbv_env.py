@@ -280,6 +280,8 @@ class NBVEnvV0(Env):
 					# Max steps is self.max_steps
 					took_max_steps = False
 
+					group_move_count = 0
+
 					for j in range(self.max_steps):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
@@ -319,6 +321,7 @@ class NBVEnvV0(Env):
 							prev_image_idx = image_idx
 							image_idx = (image_idx + 1) % group_size
 							move_count = move_count + 1
+							group_move_count = group_move_count + 1
 							if category not in object_movements:
 								object_movements[category] = {}
 							if group not in object_movements[category]:
@@ -331,6 +334,7 @@ class NBVEnvV0(Env):
 							prev_image_idx = image_idx
 							image_idx = (image_idx - 1) % group_size
 							move_count = move_count + 1
+							group_move_count = group_move_count + 1
 							if category not in object_movements:
 								object_movements[category] = {}
 							if group not in object_movements[category]:
@@ -342,9 +346,9 @@ class NBVEnvV0(Env):
 						elif self.actions[action] == category:
 							num_correct = num_correct + 1
 
-							if move_count not in object_movements_count:
-								object_movements_count[move_count] = 0
-							object_movements_count[move_count] = object_movements_count[move_count] + 1
+							if group_move_count not in object_movements_count:
+								object_movements_count[group_move_count] = 0
+							object_movements_count[group_move_count] = object_movements_count[group_move_count] + 1
 
 							break
 						else:
