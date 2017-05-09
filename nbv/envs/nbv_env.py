@@ -270,7 +270,8 @@ class NBVEnvV0(Env):
 			max_steps_instance = 0
 			group_moved_count = 0
 			max_steps_correct = 0
-			object_movements_count = {}
+			object_movements_correct_count = {}
+			object_movements_incorrect_count = {}
 			for category in self.data[data_type]:
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
@@ -348,15 +349,20 @@ class NBVEnvV0(Env):
 						elif self.actions[action] == category:
 							num_correct = num_correct + 1
 
-							if group_move_count not in object_movements_count:
-								object_movements_count[group_move_count] = 0
-							object_movements_count[group_move_count] = object_movements_count[group_move_count] + 1
+							if group_move_count not in object_movements_correct_count:
+								object_movements_correct_count[group_move_count] = 0
+							object_movements_correct_count[group_move_count] = object_movements_correct_count[group_move_count] + 1
 
 							if took_max_steps:
 								max_steps_correct = max_steps_correct + 1
 
 							break
 						else:
+
+							if group_move_count not in object_movements_incorrect_count:
+								object_movements_incorrect_count[group_move_count] = 0
+							object_movements_incorrect_count[group_move_count] = object_movements_incorrect_count[group_move_count] + 1
+
 							incorrect_objects = incorrect_objects + [group]
 
 							break
@@ -373,7 +379,8 @@ class NBVEnvV0(Env):
 			print('Number of objects that moved: %d' % group_moved_count)
 			print('Number of objects that took max steps: %d' % max_steps_instance)
 			print('Number of objects that took max steps and classify correctly: %d' % max_steps_correct)
-			print('Move counter for correct classification: %s' % str(object_movements_count))
+			print('Move counter for correct classification: %s' % str(object_movements_correct_count))
+			print('Move counter for incorrect classification: %s' % str(object_movements_incorrect_count))
 			accuracies.append(accuracy)
 			movements.append(move_count)
 			max_steps_instances.append(max_steps_instance)
