@@ -167,14 +167,16 @@ class NBVEnvV0(Env):
 			max_steps_instance = 0
 			group_moved_count = 0
 			for category in self.data[data_type]:
-				counted = False
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
 					group_size = self.data[data_type][category][group]['size']
 					image_idx = random.randint(1, group_size) - 1
 
+					# Count if the object moved
+					counted = False
 					# Max steps is self.max_steps
 					took_max_steps = False
+
 					for j in range(self.max_steps):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
@@ -267,14 +269,16 @@ class NBVEnvV0(Env):
 			max_steps_instance = 0
 			group_moved_count = 0
 			for category in self.data[data_type]:
-				counted = False
 				for group in self.data[data_type][category]:
 					total_groups = total_groups + 1
 					group_size = self.data[data_type][category][group]['size']
 					image_idx = random.randint(1, group_size) - 1
 
+					# Count if the object moved
+					counted = False
 					# Max steps is self.max_steps
 					took_max_steps = False
+
 					for j in range(self.max_steps):
 						image_path = self.data[data_type][category][group]['images'][image_idx]
 						image_path = os.path.join(self.dir_path, image_path)
