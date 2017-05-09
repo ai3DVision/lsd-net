@@ -112,6 +112,9 @@ class Config:
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
     TRAINING_MIN_BATCH_SIZE = 0
     
+    # Probability of random action
+    ACTION_EPSILON = 0.10
+
     #########################################################################
     # Log and save
 

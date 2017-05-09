@@ -94,13 +94,19 @@ class ProcessAgent(Process):
             if Config.PLAY_MODE:
                 rank_1_action = np.argmax(rank_1_prediction) + num_rank_2_actions
             else:
-                rank_1_action = np.random.choice(rank_1_actions, p=rank_1_prediction)
-
+                if np.random.uniform() < Config.ACTION_EPSILON:
+                    rank_1_action = np.random.choice(rank_1_actions)
+                else:
+                    rank_1_action = np.random.choice(rank_1_actions, p=rank_1_prediction)
+                
             if rank_1_action == 42:
                 if Config.PLAY_MODE:
                     rank_2_action = np.argmax(rank_2_prediction)
                 else:
-                    rank_2_action = np.random.choice(rank_2_actions, p=rank_2_prediction)
+                    if np.random.uniform() < Config.ACTION_EPSILON:
+                        rank_2_action = np.random.choice(rank_2_actions)
+                    else:
+                        rank_2_action = np.random.choice(rank_2_actions, p=rank_2_prediction)
                 action = rank_2_action
             else:
                 action = rank_1_action
