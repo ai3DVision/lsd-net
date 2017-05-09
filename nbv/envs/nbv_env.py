@@ -260,6 +260,7 @@ class NBVEnvV0(Env):
 		max_steps_instances = []
 		max_steps_object_instances = []
 		object_movements = {}
+		incorrect_objects = []
 
 		for i in range(num_episode):
 			print('Testing episode %d' % i)
@@ -356,6 +357,8 @@ class NBVEnvV0(Env):
 
 							break
 						else:
+							incorrect_objects = incorrect_objects + [group]
+
 							break
 
 					frame_q.queue.clear()
@@ -381,6 +384,7 @@ class NBVEnvV0(Env):
 		print('The number of objects that took the max number of steps is %f +/- %f' % (np.mean(max_steps_instances), np.std(max_steps_instances)))
 		print('The object movements are %s' % str(object_movements))
 		print('The objects that took the max number of steps is %s' % str(max_steps_object_instances))
+		print('The incorrectly classified objects are %s' % list(set(incorrect_objects)))
 		sys.stdout.flush()
 
 class NBVEnvV1(NBVEnvV0):
