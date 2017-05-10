@@ -31,7 +31,7 @@ class Config:
 
     # Name of the game, with version (e.g. PongDeterministic-v0)
     #ATARI_GAME = 'PongDeterministic-v0'
-    ATARI_GAME = 'Next-Best-View-v0'
+    ATARI_GAME = 'Next-Best-View-v7'
 
     # Enable to see the trained agent in action
     PLAY_MODE = False
@@ -80,7 +80,7 @@ class Config:
     PREDICTION_BATCH_SIZE = 128
 
     # Input of the DNN
-    STACKED_FRAMES = 4
+    STACKED_FRAMES = 3
     IMAGE_WIDTH = 224
     IMAGE_HEIGHT = 224
 
