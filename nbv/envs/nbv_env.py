@@ -3,9 +3,9 @@ import ast
 import random
 from PIL import Image
 import numpy as np
-# import matplotlib
-# matplotlib.use('TkAgg')
-# import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 import time
 from gym import Env, spaces
 import sys
