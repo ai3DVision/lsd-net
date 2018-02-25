@@ -122,10 +122,10 @@ class NBVEnvV0(Env):
 		return obs, reward, is_terminal, info
 
 	def render(self, mode='human', close=False):
-		# plt.imshow(self.image)
-		# plt.show(block=False)
-		# time.sleep(self.render_delay)
-		# plt.close()
+		plt.imshow(self.image)
+		plt.show(block=False)
+		time.sleep(self.render_delay)
+		plt.close()
 		pass
 		
 	def close(self):
